@@ -38,7 +38,12 @@ public class UserProfileController : BaseController
     {
         var query = new GetUserProfileByIdQuery {Id = Guid.Parse(id) };
         var response = await _mediator.Send(query);
-        var profile = _mapper.Map<UserProfileResponse>(response);
+        if (response.IsError)
+        {
+            return HandleErrorResponse(response.Errors);
+        }
+
+        var profile = _mapper.Map<UserProfileResponse>(response.Payload);
         return Ok(profile);
     }
 
@@ -47,7 +52,7 @@ public class UserProfileController : BaseController
     {
         var query = new GetAllUserProfilesQuery();
         var response = await _mediator.Send(query);
-        var profiles = _mapper.Map<List<UserProfileResponse>>(response);
+        var profiles = _mapper.Map<List<UserProfileResponse>>(response.Payload);
         return Ok(profiles);
     }
 
