@@ -1,0 +1,31 @@
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using RentalService.Domain.Aggregates.Common;
+using RentalService.Domain.Aggregates.ItemAggregates;
+using RentalService.Domain.Aggregates.UserProfileAggregates;
+
+namespace RentalService.Dal;
+
+public class DataContext : IdentityDbContext
+{
+    public DataContext(DbContextOptions options) : base(options)
+    {
+        
+    }
+    public DbSet<Country> Countries { get; set; }
+    public DbSet<City> Cities { get; set; }
+    public DbSet<UserContact> UserContacts { get; set; }
+    public DbSet<UserBasicInfo> UserBasicInfos { get; set; }
+    public DbSet<UserProfile> UserProfiles { get; set; }
+
+    public DbSet<ItemCategory> ItemCategories { get; set; }
+    public DbSet<Manufacturer> Manufacturers { get; set; }
+    public DbSet<Item> Items { get; set; }
+
+
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+    }
+}

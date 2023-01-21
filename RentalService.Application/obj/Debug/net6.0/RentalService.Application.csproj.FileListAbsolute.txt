@@ -1,0 +1,17 @@
+D:\csharp\RentalService\RentalService.Application\bin\Debug\net6.0\RentalService.Application.deps.json
+D:\csharp\RentalService\RentalService.Application\bin\Debug\net6.0\RentalService.Application.dll
+D:\csharp\RentalService\RentalService.Application\bin\Debug\net6.0\RentalService.Application.pdb
+D:\csharp\RentalService\RentalService.Application\bin\Debug\net6.0\RentalService.Dal.dll
+D:\csharp\RentalService\RentalService.Application\bin\Debug\net6.0\RentalService.Domain.dll
+D:\csharp\RentalService\RentalService.Application\bin\Debug\net6.0\RentalService.Dal.pdb
+D:\csharp\RentalService\RentalService.Application\bin\Debug\net6.0\RentalService.Domain.pdb
+D:\csharp\RentalService\RentalService.Application\obj\Debug\net6.0\RentalService.Application.csproj.AssemblyReference.cache
+D:\csharp\RentalService\RentalService.Application\obj\Debug\net6.0\RentalService.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\csharp\RentalService\RentalService.Application\obj\Debug\net6.0\RentalService.Application.AssemblyInfoInputs.cache
+D:\csharp\RentalService\RentalService.Application\obj\Debug\net6.0\RentalService.Application.AssemblyInfo.cs
+D:\csharp\RentalService\RentalService.Application\obj\Debug\net6.0\RentalService.Application.csproj.CoreCompileInputs.cache
+D:\csharp\RentalService\RentalService.Application\obj\Debug\net6.0\RentalService.Application.csproj.CopyComplete
+D:\csharp\RentalService\RentalService.Application\obj\Debug\net6.0\RentalService.Application.dll
+D:\csharp\RentalService\RentalService.Application\obj\Debug\net6.0\refint\RentalService.Application.dll
+D:\csharp\RentalService\RentalService.Application\obj\Debug\net6.0\RentalService.Application.pdb
+D:\csharp\RentalService\RentalService.Application\obj\Debug\net6.0\ref\RentalService.Application.dll
