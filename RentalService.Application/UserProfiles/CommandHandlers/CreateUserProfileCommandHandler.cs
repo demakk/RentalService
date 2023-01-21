@@ -1,11 +1,12 @@
 ﻿using MediatR;
+using RentalService.Application.Models;
 using RentalService.Application.UserProfiles.Commands;
 using RentalService.Dal;
 using RentalService.Domain.Aggregates.UserProfileAggregates;
 
 namespace RentalService.Application.UserProfiles.CommandHandlers;
 
-public class CreateUserProfileCommandHandler : IRequestHandler<CreateUserProfileCommand, UserProfile>
+public class CreateUserProfileCommandHandler : IRequestHandler<CreateUserProfileCommand, OperationResult<UserProfile>>
 {
     
     private readonly DataContext _ctx;
@@ -15,8 +16,9 @@ public class CreateUserProfileCommandHandler : IRequestHandler<CreateUserProfile
         _ctx = ctx;
     }
     
-    public async Task<UserProfile> Handle(CreateUserProfileCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<UserProfile>> Handle(CreateUserProfileCommand request, CancellationToken cancellationToken)
     {
+        var result = new OperationResult<UserProfile>();
         var basicInfo = UserBasicInfo.CreateUserBasicInfo(request.FirstName, request.LastName, request.DateOfBirth,
             request.CityId, request.Address, request.Contacts);
         
@@ -24,6 +26,8 @@ public class CreateUserProfileCommandHandler : IRequestHandler<CreateUserProfile
 
         _ctx.Add(profile);
         await _ctx.SaveChangesAsync(cancellationToken);
-        return profile;
+
+        result.Payload = profile;
+        return result;
     }
 }

@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using RentalService.Application.Models;
 using RentalService.Domain.Aggregates.UserProfileAggregates;
 
 namespace RentalService.Application.UserProfiles.Commands;
 
-public class UpdateUserProfileCommand : IRequest<UserProfile>
+public class UpdateUserProfileCommand : IRequest<OperationResult<UserProfile>>
 {
     public Guid Id { get; set; }
     public string FirstName { get;  set; }

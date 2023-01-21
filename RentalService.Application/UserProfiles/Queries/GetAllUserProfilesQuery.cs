@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using RentalService.Application.Models;
 using RentalService.Domain.Aggregates.UserProfileAggregates;
 
 namespace RentalService.Application.UserProfiles.Queries;
 
-public class GetAllUserProfilesQuery : IRequest<IEnumerable<UserProfile>>
+public class GetAllUserProfilesQuery : IRequest<OperationResult<IEnumerable<UserProfile>>>
 {
     
 }

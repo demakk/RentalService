@@ -11,7 +11,7 @@ namespace RentalService.Api.Controllers;
 
 [ApiController]
 [Route(ApiRoutes.BaseRoute)]
-public class UserProfileController : ControllerBase
+public class UserProfileController : BaseController
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
@@ -27,8 +27,9 @@ public class UserProfileController : ControllerBase
     {
         var command = _mapper.Map<CreateUserProfileCommand>(profile);
         var response = await _mediator.Send(command);
-        var result = _mapper.Map<UserProfileResponse>(response);
-        return CreatedAtAction("CreateUserProfile", new {id = response.Id}, result);
+        
+        var createdProfile = _mapper.Map<UserProfileResponse>(response.Payload);
+        return CreatedAtAction("CreateUserProfile", new {id = createdProfile.Id}, createdProfile);
     }
     
     [HttpGet]
@@ -57,8 +58,8 @@ public class UserProfileController : ControllerBase
         var command = _mapper.Map<UpdateUserProfileCommand>(profile);
         command.Id = Guid.Parse(id);
         var response = await _mediator.Send(command);
-        var userProfile = _mapper.Map<UserProfileResponse>(response);
-        return Ok(userProfile);
+
+        return (response.IsError) ? HandleErrorResponse(response.Errors) : NoContent();
     }
 
     [HttpDelete]
@@ -67,6 +68,6 @@ public class UserProfileController : ControllerBase
     {
         var command = new DeleteUserProfileCommand { Id = Guid.Parse(id) };
         var response = await _mediator.Send(command);
-        return NoContent();
+        return (response.IsError) ? HandleErrorResponse(response.Errors) : NoContent();
     }
 }

@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using RentalService.Application.Models;
 using RentalService.Domain.Aggregates.UserProfileAggregates;
 
 namespace RentalService.Application.UserProfiles.Commands;
 
-public class CreateUserProfileCommand : IRequest<UserProfile>
+public class CreateUserProfileCommand : IRequest<OperationResult<UserProfile>>
 {
     public string FirstName { get;  set; }
     public string LastName { get;  set; }
