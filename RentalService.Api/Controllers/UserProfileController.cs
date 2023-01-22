@@ -50,6 +50,7 @@ public class UserProfileController : BaseController
     [HttpGet]
     public async Task<IActionResult> GetAllUserProfiles()
     {
+        //throw new NotImplementedException("Hello!");
         var query = new GetAllUserProfilesQuery();
         var response = await _mediator.Send(query);
         var profiles = _mapper.Map<List<UserProfileResponse>>(response.Payload);

@@ -11,5 +11,5 @@ public class CreateUserProfileCommand : IRequest<OperationResult<UserProfile>>
     public DateTime DateOfBirth { get;  set; }
     public int CityId { get;  set; }
     public string Address { get;  set; }
-    public List<UserContact>? Contacts { get; set; }
+    public List<UserContact> Contacts { get; set; }
 }
