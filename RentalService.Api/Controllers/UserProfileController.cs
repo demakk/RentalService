@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RentalService.Api.Contracts.UserProfileContracts.Requests;
 using RentalService.Api.Contracts.UserProfileContracts.Responses;
+using RentalService.Api.Filters;
 using RentalService.Application.UserProfiles.Commands;
 using RentalService.Application.UserProfiles.Queries;
 
@@ -23,6 +24,8 @@ public class UserProfileController : BaseController
     }
 
     [HttpPost]
+    [ValidateModel]
+    
     public async Task<IActionResult> CreateUserProfile([FromBody] UserProfileCreate profile)
     {
         var command = _mapper.Map<CreateUserProfileCommand>(profile);
@@ -31,9 +34,10 @@ public class UserProfileController : BaseController
         var createdProfile = _mapper.Map<UserProfileResponse>(response.Payload);
         return CreatedAtAction("CreateUserProfile", new {id = createdProfile.Id}, createdProfile);
     }
-    
+
     [HttpGet]
     [Route(ApiRoutes.UserProfiles.IdRoute)]
+    [ValidateGuid("id")]
     public async Task<IActionResult> GetUserProfileById(string id)
     {
         var query = new GetUserProfileByIdQuery {Id = Guid.Parse(id) };
@@ -59,6 +63,8 @@ public class UserProfileController : BaseController
 
     [HttpPatch]
     [Route(ApiRoutes.UserProfiles.IdRoute)]
+    [ValidateModel]
+    [ValidateGuid("id")]
     public async Task<IActionResult> UpdateUserProfile([FromBody] UserProfileCreate profile, string id)
     {
         var command = _mapper.Map<UpdateUserProfileCommand>(profile);
@@ -70,6 +76,7 @@ public class UserProfileController : BaseController
 
     [HttpDelete]
     [Route(ApiRoutes.UserProfiles.IdRoute)]
+    [ValidateGuid("id")]
     public async Task<IActionResult> DeleteUserProfile(string id)
     {
         var command = new DeleteUserProfileCommand { Id = Guid.Parse(id) };

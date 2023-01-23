@@ -25,8 +25,6 @@ public class ValidateModelAttribute : ActionFilterAttribute
             {
                 apiError.Errors.Add(error);
             }
-            
-            apiError.Errors.AddRange(errors);
 
             var result = new JsonResult(apiError) { StatusCode = 400 };
 
