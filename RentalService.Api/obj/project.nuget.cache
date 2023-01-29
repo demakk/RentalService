@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "uJo0RDBYUNfef0XAnLhGqW7lvtQnD83ZvtMP5cQzr10Xt5dx7Di87OqK6pHiNwEc3mcwE2VqULneBgM5uK5y+g==",
+  "dgSpecHash": "z2ZtCgSYpN6olmZW6tqhaXr7uViac3mnFGGD3UKigPNWbaRiSY7vKG91jpMfWXGEziRkXLT2pZhW6xq0Wh15ag==",
   "success": true,
   "projectFilePath": "D:\\csharp\\RentalService\\RentalService.Api\\RentalService.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Uni\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
     "C:\\Users\\Uni\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
+    "C:\\Users\\Uni\\.nuget\\packages\\fluentvalidation\\11.4.0\\fluentvalidation.11.4.0.nupkg.sha512",
     "C:\\Users\\Uni\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Uni\\.nuget\\packages\\mediatr\\11.0.0\\mediatr.11.0.0.nupkg.sha512",
     "C:\\Users\\Uni\\.nuget\\packages\\mediatr.contracts\\1.0.1\\mediatr.contracts.1.0.1.nupkg.sha512",

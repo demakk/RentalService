@@ -23,6 +23,25 @@ public class BaseController : ControllerBase
             apiError.Errors.Add(error.Message);
             return NotFound(apiError);
         }
+        
+        
+        if (errors.Any(e => e.Code == ErrorCode.ValidationError))
+        {
+            apiError = new ErrorResponse
+            {
+                Timestamp = DateTime.Now,
+                StatusPhrase = "Validation error",
+                StatusCode = 101
+            };
+            errors.Where(e => e.Code == ErrorCode.ValidationError).ToList().ForEach(e =>
+            {
+                apiError.Errors.Add(e.Message);
+            });
+            
+            
+            return StatusCode(404, apiError);
+        }
+        
 
         apiError = new ErrorResponse
         {

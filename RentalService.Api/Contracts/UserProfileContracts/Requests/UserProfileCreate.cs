@@ -10,7 +10,6 @@ public class UserProfileCreate
     public string FirstName { get;  set; }
     
     [Required]
-    [MinLength(3)]
     [MaxLength(50)]
     public string LastName { get;  set; }
     
@@ -20,11 +19,12 @@ public class UserProfileCreate
     [Required]
     public int CityId { get;  set; }
     
+    [Required]
     public string Address { get;  set; }
 
-    [Required]
-    [EmailAddress]
-    public string Email { get; set; }
+    // [Required]
+    // [EmailAddress]
+    // public string Email { get; set; }
 
     [Required]
     public List<UserContactCreate> Contacts { get; set; }

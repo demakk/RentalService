@@ -1,4 +1,6 @@
 ﻿using RentalService.Domain.Aggregates.Common;
+using RentalService.Domain.Exceptions;
+using RentalService.Domain.Validators.UserProfileValidators;
 
 namespace RentalService.Domain.Aggregates.UserProfileAggregates;
 
@@ -24,17 +26,32 @@ public class UserBasicInfo
     public static UserBasicInfo CreateUserBasicInfo(string firstName, string lastName,
         DateTime dateOfBirth, int cityId, string address, List<UserContact> contacts)
     {
+        var validator = new BasicInfoValidator();
         
-        return new UserBasicInfo
+        var objectToValidate = 
+            new UserBasicInfo
+            {
+                Id = Guid.NewGuid(),
+                FirstName = firstName,
+                LastName = lastName,
+                DateOfBirth = dateOfBirth,
+                CityId = cityId,
+                Address = address,
+                _userContacts = contacts
+            };
+
+        var validationResult = validator.Validate(objectToValidate);
+
+        if (validationResult.IsValid) return objectToValidate;
+
+        var exception = new BasicInfoNotValidException("The user profile basic info is not valid");
+
+        foreach (var error in validationResult.Errors)
         {
-            Id = Guid.NewGuid(),
-            FirstName = firstName,
-            LastName = lastName,
-            DateOfBirth = dateOfBirth,
-            CityId = cityId,
-            Address = address,
-            _userContacts = contacts
-        };
+            exception.ValidationErrors.Add(error.ErrorMessage);
+        }
+
+        throw exception;
     }
 
 

@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "q5epVKQvL66Ie9WG5ZobPIagJdaLwqzBLXCvy9twZFljrWcvftco1mplF8jwlFD1YEYJ7QK9vUyIZrwsu0O6eQ==",
+  "dgSpecHash": "9GpZe/jv2u5jnC6gDYwKui8N/qq2lMpZRHHIiYPfJNg4Gjmf/Hs3cE/suCdN0g+EC32P3dgpPaEBVk3sr1QwaA==",
   "success": true,
   "projectFilePath": "D:\\csharp\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Uni\\.nuget\\packages\\fluentvalidation\\11.4.0\\fluentvalidation.11.4.0.nupkg.sha512",
     "C:\\Users\\Uni\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Uni\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.10\\microsoft.aspnetcore.cryptography.internal.6.0.10.nupkg.sha512",
     "C:\\Users\\Uni\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.10\\microsoft.aspnetcore.cryptography.keyderivation.6.0.10.nupkg.sha512",

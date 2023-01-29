@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "uv8uYwkajy9PkqS6DHCmstvBuH5R2hkkYM8NrHP2od2nFGupGqf9ncWcUcObFTb1c41dYcvm1/wwAwj35oQAfA==",
+  "dgSpecHash": "w4s2w73e7xb1Gt8RVblfkCcLaYsiwJVgXFXTE0h6EJhLWTV56nuSnH7qR2gIA4jN0d5tktisdhxf3Ph5Tzd3xg==",
   "success": true,
   "projectFilePath": "D:\\csharp\\RentalService\\RentalService.Application\\RentalService.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Uni\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
+    "C:\\Users\\Uni\\.nuget\\packages\\fluentvalidation\\11.4.0\\fluentvalidation.11.4.0.nupkg.sha512",
     "C:\\Users\\Uni\\.nuget\\packages\\mediatr\\11.0.0\\mediatr.11.0.0.nupkg.sha512",
     "C:\\Users\\Uni\\.nuget\\packages\\mediatr.contracts\\1.0.1\\mediatr.contracts.1.0.1.nupkg.sha512",
     "C:\\Users\\Uni\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.10\\microsoft.aspnetcore.cryptography.internal.6.0.10.nupkg.sha512",

@@ -25,14 +25,14 @@ public class UserProfileController : BaseController
 
     [HttpPost]
     [ValidateModel]
-    
     public async Task<IActionResult> CreateUserProfile([FromBody] UserProfileCreate profile)
     {
         var command = _mapper.Map<CreateUserProfileCommand>(profile);
         var response = await _mediator.Send(command);
         
         var createdProfile = _mapper.Map<UserProfileResponse>(response.Payload);
-        return CreatedAtAction("CreateUserProfile", new {id = createdProfile.Id}, createdProfile);
+        return response.IsError ? HandleErrorResponse(response.Errors) 
+            : CreatedAtAction("CreateUserProfile", new {id = createdProfile.Id}, createdProfile);
     }
 
     [HttpGet]

@@ -76,3 +76,4 @@ D:\csharp\RentalService\RentalService.Api\bin\Debug\net6.0\MediatR.Contracts.dll
 D:\csharp\RentalService\RentalService.Api\bin\Debug\net6.0\MediatR.Extensions.Microsoft.DependencyInjection.dll
 D:\csharp\RentalService\RentalService.Api\bin\Debug\net6.0\RentalService.Application.dll
 D:\csharp\RentalService\RentalService.Api\bin\Debug\net6.0\RentalService.Application.pdb
+D:\csharp\RentalService\RentalService.Api\bin\Debug\net6.0\FluentValidation.dll

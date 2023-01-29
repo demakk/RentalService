@@ -332,6 +332,68 @@ namespace RentalService.Dal.Migrations
                     b.ToTable("Manufacturers");
                 });
 
+            modelBuilder.Entity("RentalService.Domain.Aggregates.OrderAggregates.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ActualRentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("UserProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("RentalService.Domain.Aggregates.OrderAggregates.OrderItemLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("CurrentPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("InitialPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ManufacturerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItemLinks");
+                });
+
             modelBuilder.Entity("RentalService.Domain.Aggregates.UserProfileAggregates.UserBasicInfo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -479,17 +541,21 @@ namespace RentalService.Dal.Migrations
 
             modelBuilder.Entity("RentalService.Domain.Aggregates.ItemAggregates.Item", b =>
                 {
-                    b.HasOne("RentalService.Domain.Aggregates.ItemAggregates.ItemCategory", null)
+                    b.HasOne("RentalService.Domain.Aggregates.ItemAggregates.ItemCategory", "ItemCategory")
                         .WithMany("Items")
                         .HasForeignKey("ItemCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RentalService.Domain.Aggregates.ItemAggregates.Manufacturer", null)
+                    b.HasOne("RentalService.Domain.Aggregates.ItemAggregates.Manufacturer", "Manufacturer")
                         .WithMany("Items")
                         .HasForeignKey("ManufacturerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ItemCategory");
+
+                    b.Navigation("Manufacturer");
                 });
 
             modelBuilder.Entity("RentalService.Domain.Aggregates.ItemAggregates.Manufacturer", b =>
@@ -499,6 +565,36 @@ namespace RentalService.Dal.Migrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RentalService.Domain.Aggregates.OrderAggregates.Order", b =>
+                {
+                    b.HasOne("RentalService.Domain.Aggregates.UserProfileAggregates.UserProfile", "UserProfile")
+                        .WithMany()
+                        .HasForeignKey("UserProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("RentalService.Domain.Aggregates.OrderAggregates.OrderItemLink", b =>
+                {
+                    b.HasOne("RentalService.Domain.Aggregates.ItemAggregates.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RentalService.Domain.Aggregates.OrderAggregates.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("RentalService.Domain.Aggregates.UserProfileAggregates.UserBasicInfo", b =>

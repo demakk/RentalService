@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using RentalService.Application.Enums;
 using RentalService.Application.Models;
 using RentalService.Application.UserProfiles.Commands;
 using RentalService.Dal;
 using RentalService.Domain.Aggregates.UserProfileAggregates;
+using RentalService.Domain.Exceptions;
 
 namespace RentalService.Application.UserProfiles.CommandHandlers;
 
@@ -19,15 +21,41 @@ public class CreateUserProfileCommandHandler : IRequestHandler<CreateUserProfile
     public async Task<OperationResult<UserProfile>> Handle(CreateUserProfileCommand request, CancellationToken cancellationToken)
     {
         var result = new OperationResult<UserProfile>();
-        var basicInfo = UserBasicInfo.CreateUserBasicInfo(request.FirstName, request.LastName, request.DateOfBirth,
-            request.CityId, request.Address, request.Contacts);
-        
-        var profile = UserProfile.CreateUserProfile(basicInfo,Guid.NewGuid().ToString());
+        try
+        {
+            var basicInfo = UserBasicInfo.CreateUserBasicInfo(request.FirstName, request.LastName, request.DateOfBirth,
+                request.CityId, request.Address, request.Contacts);
 
-        _ctx.Add(profile);
-        await _ctx.SaveChangesAsync(cancellationToken);
+            var profile = UserProfile.CreateUserProfile(basicInfo, Guid.NewGuid().ToString());
 
-        result.Payload = profile;
+            _ctx.Add(profile);
+            await _ctx.SaveChangesAsync(cancellationToken);
+
+            result.Payload = profile;
+        }
+        catch (BasicInfoNotValidException exception)
+        {
+            result.IsError = true;
+            exception.ValidationErrors.ForEach(e =>
+            {
+                var error = new Error()
+                {
+                    Code = ErrorCode.ValidationError,
+                    Message = e
+                };
+                result.Errors.Add(error);
+            });
+        }
+        catch (Exception exception)
+        {
+            result.IsError = true;
+            var error = new Error
+            {
+                Code = ErrorCode.UnknownError,
+                Message = exception.Message
+            };
+            result.Errors.Add(error);
+        }
         return result;
     }
 }

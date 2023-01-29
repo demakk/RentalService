@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RentalService.Domain.Aggregates.Common;
 using RentalService.Domain.Aggregates.ItemAggregates;
+using RentalService.Domain.Aggregates.OrderAggregates;
 using RentalService.Domain.Aggregates.UserProfileAggregates;
 
 namespace RentalService.Dal;
@@ -21,6 +22,8 @@ public class DataContext : IdentityDbContext
     public DbSet<ItemCategory> ItemCategories { get; set; }
     public DbSet<Manufacturer> Manufacturers { get; set; }
     public DbSet<Item> Items { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItemLink> OrderItemLinks { get; set; }
 
 
 

@@ -20,25 +20,40 @@ public class GetUserProfileByIdQueryHandler : IRequestHandler<GetUserProfileById
     public async Task<OperationResult<UserProfile>> Handle(GetUserProfileByIdQuery request, CancellationToken cancellationToken)
     {
         var result = new OperationResult<UserProfile>();
-        var profile = await _ctx.UserProfiles
-            .Include(up => up.UserBasicInfo)
-            .ThenInclude(bi => bi.UserContacts)
-            .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
-        
-        if (profile is null)
+
+        try
         {
+            var profile = await _ctx.UserProfiles
+                .Include(up => up.UserBasicInfo)
+                .ThenInclude(bi => bi.UserContacts)
+                .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+        
+            if (profile is null)
+            {
+                var error = new Error
+                {
+                    Code = ErrorCode.NotFound,
+                    Message = $"User with id {request.Id} not found"
+                };
+            
+                result.IsError = true;
+                result.Errors.Add(error);
+                return result;
+            }
+        
+            result.Payload = profile;
+        }
+        catch (Exception exception)
+        {
+            result.IsError = true;
             var error = new Error
             {
-                Code = ErrorCode.NotFound,
-                Message = $"User with id {request.Id} not found"
+                Code = ErrorCode.UnknownError,
+                Message = exception.Message
             };
-            
-            result.IsError = true;
             result.Errors.Add(error);
-            return result;
         }
-        
-        result.Payload = profile;
+
         return result;
     }
 }

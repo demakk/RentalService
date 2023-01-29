@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Hh/JmKGaoxx0Ax1s1q6MNjFRiHMnXZiIrJJ1b4mPjKj1b3jYPsK3J604N4IG9CRb+HUr6OifDtD74LBQgUMpIg==",
+  "dgSpecHash": "63iMJIsJDRHCnyx5TKGsURBoej5As1j8te5tEQ3TjPpHkt8nZCBfS8WyX7qPIhuqbqTxxMIAFKTQN31KamILzQ==",
   "success": true,
   "projectFilePath": "D:\\csharp\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Uni\\.nuget\\packages\\fluentvalidation\\11.4.0\\fluentvalidation.11.4.0.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using RentalService.Application.Enums;
 using RentalService.Application.Models;
 using RentalService.Application.UserProfiles.Queries;
 using RentalService.Dal;
@@ -20,11 +21,26 @@ public class GetAllUserProfilesQueryHandler : IRequestHandler<GetAllUserProfiles
         CancellationToken cancellationToken)
     {
         var result = new OperationResult<IEnumerable<UserProfile>>();
-        var profiles = await _ctx.UserProfiles
-            .Include(up => up.UserBasicInfo)
-            .ThenInclude(bi => bi.UserContacts)
-            .ToListAsync(cancellationToken);
-        result.Payload = profiles;
+
+        try
+        {
+            var profiles = await _ctx.UserProfiles
+                .Include(up => up.UserBasicInfo)
+                .ThenInclude(bi => bi.UserContacts)
+                .ToListAsync(cancellationToken);
+            result.Payload = profiles;
+        }
+        catch (Exception exception)
+        {
+            result.IsError = true;
+            var error = new Error
+            {
+                Code = ErrorCode.UnknownError,
+                Message = exception.Message
+            };
+            result.Errors.Add(error);
+        }
+
         return result;
     }
 }
