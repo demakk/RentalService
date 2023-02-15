@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RentalService.Api.Contracts.Common;
+﻿using AutoMapper;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using RentalService.Api.Contracts.Common;   
 using RentalService.Application.Enums;
 using RentalService.Application.Models;
 
@@ -7,6 +9,20 @@ namespace RentalService.Api.Controllers;
 
 public class BaseController : ControllerBase
 {
+    protected readonly IMapper _mapper;
+    protected readonly IMediator _mediator;
+
+    public BaseController()
+    {
+        
+    }
+    
+    public BaseController(IMapper mapper, IMediator mediator)
+    {
+        _mapper = mapper;
+        _mediator = mediator;
+    }
+    
     protected IActionResult HandleErrorResponse(List<Error> errors)
     {
         ErrorResponse apiError;

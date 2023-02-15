@@ -5,14 +5,32 @@ namespace RentalService.Domain.Aggregates.OrderAggregates;
 public class OrderItemLink
 {
     public Guid Id { get; private set; }
-    public Guid ProductCategoryId { get; private set; }
-    public Guid ManufacturerId { get; private set; }
-    public decimal InitialPrice { get; private set; }
-    public decimal CurrentPrice { get; private set; }
-    public string Description { get; private set; }
-    public ItemStatus Status { get; private set; }
-    
+    public Guid ItemId { get; private set; }
+    public Guid OrderId { get; private set; }
+    public DateTime StartDate { get; private set; }
+    public DateTime EndDate { get; private set; }
+    public DateTime ActualReturnDate { get; private set; }
+
     //nav properties
     public Item Item { get; private set; }
     public Order Order { get; private set; }
+    
+    //factory methods
+    public static OrderItemLink CreateOrderItemLink(Guid itemId, Guid orderId, DateTime startDate, DateTime endDate)
+    {   
+        //TO DO: Validate start, end dates, and Guid's (TryParse)
+        var orderItemLink = new OrderItemLink()
+        {
+            ItemId = itemId,
+            OrderId = orderId,
+            StartDate = startDate,
+            EndDate = endDate
+        };
+        return orderItemLink;
+    }
+
+    public void UpdateActualReturnDate()
+    {
+        ActualReturnDate = DateTime.Now;
+    }
 }

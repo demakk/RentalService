@@ -29,6 +29,9 @@ public class DataContext : IdentityDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // modelBuilder.Entity<OrderItemLink>(
+        //     ol =>
+        //         ol.HasNoKey());
         base.OnModelCreating(modelBuilder);
     }
 }

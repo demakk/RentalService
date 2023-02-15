@@ -13,4 +13,16 @@ public class City
     public IEnumerable<UserBasicInfo> UserBasicInfos => _userBasicInfos;
     
 
+    //factory methods
+    public City CreateCity(int countryId, string name)
+    {
+        //TO DO: Validate city name
+        var city = new City
+        {
+            CountryId = countryId,
+            Name = name
+        };
+        return city;
+    }
+    
 }

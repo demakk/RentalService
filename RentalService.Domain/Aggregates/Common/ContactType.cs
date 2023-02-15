@@ -2,7 +2,7 @@
 
 public enum ContactType
 {
-    Telegram,
+    Telegram,   
     Viber,
     Phone
 }

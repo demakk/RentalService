@@ -9,4 +9,13 @@ public static class ApiRoutes
         public const string IdRoute = "{id}";
     }
 
+    public static class Order
+    {
+        public const string IdRoute = "{id}";
+
+        public const string OrderItemRoute = "{orderId}/item";
+        
+        public const string OrderItemsByIdRoute = "{orderId}/items";
+    }
+
 }

@@ -25,10 +25,6 @@
       <Folder Include="Geography\Countries\CommandHandlers" />
       <Folder Include="Geography\Countries\Queries" />
       <Folder Include="Geography\Countries\QueryHandlers" />
-      <Folder Include="Items\CommandHandlers" />
-      <Folder Include="Items\Commands" />
-      <Folder Include="Items\Queries" />
-      <Folder Include="Items\QueryHandlers" />
     </ItemGroup>
 
 </Project>

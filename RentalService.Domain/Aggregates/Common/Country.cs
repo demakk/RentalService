@@ -11,4 +11,14 @@ public class Country
     
     private readonly List<Manufacturer> _manufacturers = new List<Manufacturer>();
     public IEnumerable<Manufacturer> Manufacturers => _manufacturers;
+    
+    //factory methods
+    public Country CreateCountry(string name)
+    {
+        var country = new Country
+        {
+            Name = name
+        };
+        return country;
+    }
 }

@@ -28,7 +28,7 @@ public class CreateUserProfileCommandHandler : IRequestHandler<CreateUserProfile
 
             var profile = UserProfile.CreateUserProfile(basicInfo, Guid.NewGuid().ToString());
 
-            _ctx.Add(profile);
+            _ctx.UserProfiles.Add(profile);
             await _ctx.SaveChangesAsync(cancellationToken);
 
             result.Payload = profile;
