@@ -29,8 +29,8 @@ public class BasicInfoValidator : AbstractValidator<UserBasicInfo>
         RuleFor(bi => bi.Address)
             .NotNull().WithMessage("Address cannot be null");
 
-        RuleFor(bi => bi.UserContacts.ToList().Count)
-            .GreaterThanOrEqualTo(2).WithMessage("A person must have at least 2 ways to contact them");
+        // RuleFor(bi => bi.UserContacts.ToList().Count)
+        //     .GreaterThanOrEqualTo(2).WithMessage("A person must have at least 2 ways to contact them");
 
         RuleForEach(bi => bi.UserContacts)
             .Where(x => x.Name == "Email")

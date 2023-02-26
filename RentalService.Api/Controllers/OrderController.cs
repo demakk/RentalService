@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentalService.Api.Contracts.OrderContracts.Requests;
 using RentalService.Api.Contracts.OrderContracts.Responses;
@@ -13,6 +15,7 @@ namespace RentalService.Api.Controllers;
 
 [ApiController]
 [Route(ApiRoutes.BaseRoute)]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class OrderController : BaseController
 {
     public OrderController(IMapper mapper, IMediator mediator) : base(mapper, mediator)

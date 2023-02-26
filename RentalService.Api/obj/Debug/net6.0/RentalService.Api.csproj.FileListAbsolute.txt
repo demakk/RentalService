@@ -77,3 +77,4 @@ D:\csharp\RentalService\RentalService.Api\bin\Debug\net6.0\MediatR.Extensions.Mi
 D:\csharp\RentalService\RentalService.Api\bin\Debug\net6.0\RentalService.Application.dll
 D:\csharp\RentalService\RentalService.Api\bin\Debug\net6.0\RentalService.Application.pdb
 D:\csharp\RentalService\RentalService.Api\bin\Debug\net6.0\FluentValidation.dll
+D:\csharp\RentalService\RentalService.Api\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

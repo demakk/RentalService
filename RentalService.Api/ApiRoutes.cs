@@ -17,5 +17,11 @@ public static class ApiRoutes
         
         public const string OrderItemsByIdRoute = "{orderId}/items";
     }
+    
+    public static class Identity
+    {
+        public const string Login = "login";
+        public const string Registration = "registation";
+    }
 
 }
