@@ -1,16 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using RentalService.Application.Enums;
 using RentalService.Application.Identity.Commands;
 using RentalService.Application.Models;
-using RentalService.Application.Options;
+using RentalService.Application.Services;
 using RentalService.Dal;
 using RentalService.Domain.Aggregates.UserProfileAggregates;
 using RentalService.Domain.Exceptions;
@@ -21,14 +16,14 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Operati
 {
     private readonly DataContext _ctx;
     private readonly UserManager<IdentityUser> _userManager;
-    private readonly JwtSettings _jwtSettings;
+    private readonly IdentityService _identityService;
 
     public RegisterIdentityHandler(DataContext ctx, UserManager<IdentityUser> userManager,
-        IOptions<JwtSettings> jwtSettings)
+        IdentityService identityService)
     {
         _ctx = ctx;
         _userManager = userManager;
-        _jwtSettings = jwtSettings.Value;
+        _identityService = identityService;
     }
 
     public async Task<OperationResult<string>> Handle(RegisterIdentity request, CancellationToken cancellationToken)
@@ -58,7 +53,7 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Operati
             };
 
 
-            using var transaction = await _ctx.Database.BeginTransactionAsync(cancellationToken);
+            await using var transaction = await _ctx.Database.BeginTransactionAsync(cancellationToken);
             var creationResult =  await _userManager.CreateAsync(identityUser, request.Password);
 
             if (!creationResult.Succeeded)
@@ -92,29 +87,19 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Operati
                 await transaction.RollbackAsync();
                 throw;
             }
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.SigningKey);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
+            
+            var claimsIdentity = new ClaimsIdentity(new Claim[]
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new (JwtRegisteredClaimNames.Sub, identityUser.Email),
-                    new (JwtRegisteredClaimNames.Jti,  Guid.NewGuid().ToString()),
-                    new (JwtRegisteredClaimNames.Email, identityUser.Email),
-                    new ("IdentityId", identityUser.Id),
-                    new ("UserProfileId", profile.Id.ToString())
-                }),
-                Expires = DateTime.Now.AddHours(2),
-                Issuer = _jwtSettings.Issuer,
-                Audience = _jwtSettings.Audience[0],
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
+                new(JwtRegisteredClaimNames.Sub, identityUser.Email),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new(JwtRegisteredClaimNames.Email, identityUser.Email),
+                new("IdentityId", identityUser.Id),
+                new("UserProfileId", profile.Id.ToString())
+            });
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            result.Payload = tokenHandler.WriteToken(token);
+            var securityToken = _identityService.CreateSecurityToken(claimsIdentity);
+            
+            result.Payload = _identityService.WriteToken(securityToken);
             return result;
         }
         catch (BasicInfoNotValidException exception)

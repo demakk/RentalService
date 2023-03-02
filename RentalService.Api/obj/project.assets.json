@@ -2657,11 +2657,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\csharp\\RentalService\\RentalService.Api\\RentalService.Api.csproj",
+      "projectUniqueName": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Api\\RentalService.Api.csproj",
       "projectName": "RentalService.Api",
-      "projectPath": "D:\\csharp\\RentalService\\RentalService.Api\\RentalService.Api.csproj",
+      "projectPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Api\\RentalService.Api.csproj",
       "packagesPath": "C:\\Users\\Uni\\.nuget\\packages\\",
-      "outputPath": "D:\\csharp\\RentalService\\RentalService.Api\\obj\\",
+      "outputPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Uni\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -2678,14 +2678,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\csharp\\RentalService\\RentalService.Application\\RentalService.Application.csproj": {
-              "projectPath": "D:\\csharp\\RentalService\\RentalService.Application\\RentalService.Application.csproj"
+            "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Application\\RentalService.Application.csproj": {
+              "projectPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Application\\RentalService.Application.csproj"
             },
-            "D:\\csharp\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj": {
-              "projectPath": "D:\\csharp\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj"
+            "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj": {
+              "projectPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj"
             },
-            "D:\\csharp\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj": {
-              "projectPath": "D:\\csharp\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj"
+            "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj": {
+              "projectPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj"
             }
           }
         }

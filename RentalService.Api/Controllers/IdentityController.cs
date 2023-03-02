@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using RentalService.Api.Contracts.IdentityContracts;
 using RentalService.Api.Filters;
@@ -30,6 +31,22 @@ public class IdentityController : BaseController
 
         var response = await _mediator.Send(command);
 
-        return response.IsError ? HandleErrorResponse(response.Errors) : Ok(response.Payload);
+        var token = new AuthenticationResult { Token = response.Payload };
+        
+        return response.IsError ? HandleErrorResponse(response.Errors) : Ok(token);
+    }
+
+
+    [HttpPost]
+    [Route(ApiRoutes.Identity.Login)]
+    [ValidateModel]
+    public async Task<IActionResult> Login([FromBody] UserLogin login)
+    {
+        var command = _mapper.Map<LoginCommand>(login);
+        var response = await _mediator.Send(command);
+
+        var token = new AuthenticationResult { Token = response.Payload };
+        
+        return Ok(token);
     }
 }

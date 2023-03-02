@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2MekXey7s4igWklW2pc+caTnPjvH1P3f088flCKf7HBMyHJqbLlKFx9GJgBKlBE+qeyBumqfRFNWK+zNgag2Vw==",
+  "dgSpecHash": "2xNE2zfHIyt/nudrEIbxJTjFgIHpZL3fdaX3dzjK2H591efhncfeMgX/lT7VcBg/2kptdb8kcv5eowhtzTFwWQ==",
   "success": true,
-  "projectFilePath": "D:\\csharp\\RentalService\\RentalService.Api\\RentalService.Api.csproj",
+  "projectFilePath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Api\\RentalService.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Uni\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
     "C:\\Users\\Uni\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

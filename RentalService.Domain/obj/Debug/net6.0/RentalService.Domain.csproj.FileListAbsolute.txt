@@ -10,3 +10,15 @@ D:\csharp\RentalService\RentalService.Domain\obj\Debug\net6.0\RentalService.Doma
 D:\csharp\RentalService\RentalService.Domain\obj\Debug\net6.0\refint\RentalService.Domain.dll
 D:\csharp\RentalService\RentalService.Domain\obj\Debug\net6.0\RentalService.Domain.pdb
 D:\csharp\RentalService\RentalService.Domain\obj\Debug\net6.0\ref\RentalService.Domain.dll
+D:\dotnet\dotnet projects\RentalService\RentalService.Domain\bin\Debug\net6.0\RentalService.Domain.deps.json
+D:\dotnet\dotnet projects\RentalService\RentalService.Domain\bin\Debug\net6.0\RentalService.Domain.dll
+D:\dotnet\dotnet projects\RentalService\RentalService.Domain\bin\Debug\net6.0\RentalService.Domain.pdb
+D:\dotnet\dotnet projects\RentalService\RentalService.Domain\obj\Debug\net6.0\RentalService.Domain.csproj.AssemblyReference.cache
+D:\dotnet\dotnet projects\RentalService\RentalService.Domain\obj\Debug\net6.0\RentalService.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\dotnet\dotnet projects\RentalService\RentalService.Domain\obj\Debug\net6.0\RentalService.Domain.AssemblyInfoInputs.cache
+D:\dotnet\dotnet projects\RentalService\RentalService.Domain\obj\Debug\net6.0\RentalService.Domain.AssemblyInfo.cs
+D:\dotnet\dotnet projects\RentalService\RentalService.Domain\obj\Debug\net6.0\RentalService.Domain.csproj.CoreCompileInputs.cache
+D:\dotnet\dotnet projects\RentalService\RentalService.Domain\obj\Debug\net6.0\RentalService.Domain.dll
+D:\dotnet\dotnet projects\RentalService\RentalService.Domain\obj\Debug\net6.0\refint\RentalService.Domain.dll
+D:\dotnet\dotnet projects\RentalService\RentalService.Domain\obj\Debug\net6.0\RentalService.Domain.pdb
+D:\dotnet\dotnet projects\RentalService\RentalService.Domain\obj\Debug\net6.0\ref\RentalService.Domain.dll

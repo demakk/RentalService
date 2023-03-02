@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\csharp\\RentalService\\RentalService.Application\\RentalService.Application.csproj": {}
+    "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Application\\RentalService.Application.csproj": {}
   },
   "projects": {
-    "D:\\csharp\\RentalService\\RentalService.Application\\RentalService.Application.csproj": {
+    "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Application\\RentalService.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\csharp\\RentalService\\RentalService.Application\\RentalService.Application.csproj",
+        "projectUniqueName": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Application\\RentalService.Application.csproj",
         "projectName": "RentalService.Application",
-        "projectPath": "D:\\csharp\\RentalService\\RentalService.Application\\RentalService.Application.csproj",
+        "projectPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Application\\RentalService.Application.csproj",
         "packagesPath": "C:\\Users\\Uni\\.nuget\\packages\\",
-        "outputPath": "D:\\csharp\\RentalService\\RentalService.Application\\obj\\",
+        "outputPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Uni\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,11 +28,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\csharp\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj": {
-                "projectPath": "D:\\csharp\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj"
+              "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj": {
+                "projectPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj"
               },
-              "D:\\csharp\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj": {
-                "projectPath": "D:\\csharp\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj"
+              "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj": {
+                "projectPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj"
               }
             }
           }
@@ -76,14 +76,14 @@
         }
       }
     },
-    "D:\\csharp\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj": {
+    "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\csharp\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj",
+        "projectUniqueName": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj",
         "projectName": "RentalService.Dal",
-        "projectPath": "D:\\csharp\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj",
+        "projectPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Dal\\RentalService.Dal.csproj",
         "packagesPath": "C:\\Users\\Uni\\.nuget\\packages\\",
-        "outputPath": "D:\\csharp\\RentalService\\RentalService.Dal\\obj\\",
+        "outputPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Dal\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Uni\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -100,8 +100,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\csharp\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj": {
-                "projectPath": "D:\\csharp\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj"
+              "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj": {
+                "projectPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj"
               }
             }
           }
@@ -155,14 +155,14 @@
         }
       }
     },
-    "D:\\csharp\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj": {
+    "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\csharp\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj",
+        "projectUniqueName": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj",
         "projectName": "RentalService.Domain",
-        "projectPath": "D:\\csharp\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj",
+        "projectPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj",
         "packagesPath": "C:\\Users\\Uni\\.nuget\\packages\\",
-        "outputPath": "D:\\csharp\\RentalService\\RentalService.Domain\\obj\\",
+        "outputPath": "D:\\dotnet\\dotnet projects\\RentalService\\RentalService.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Uni\\AppData\\Roaming\\NuGet\\NuGet.Config",
