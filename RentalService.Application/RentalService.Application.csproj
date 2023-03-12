@@ -17,7 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="AutomapperProfiles" />
       <Folder Include="Geography\Cities\CommandHandlers" />
       <Folder Include="Geography\Cities\Commands" />
       <Folder Include="Geography\Cities\Queries" />

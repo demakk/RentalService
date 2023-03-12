@@ -23,17 +23,11 @@ public class CreateOrderCommandHandler : DataContextInjector, IRequestHandler<Cr
             var order = Order.CreateOrder(request.UserProfileId);
             _ctx.Orders.Add(order);
             result.Payload = order;
-            await _ctx.SaveChangesAsync();
+            await _ctx.SaveChangesAsync(cancellationToken);
         }
         catch (Exception exception)
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.UnknownError,
-                Message = exception.Message
-            };
-            result.Errors.Add(error);
+            result.AddUnknownError(exception.Message);
         }
 
         return result;

@@ -27,19 +27,13 @@ public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, Opera
             //     .Include(ol => ol.OrderId)
             //     .FirstOrDefaultAsync(ol => ol.OrderId == request.Id);
             
-            var order = await _ctx.Orders.FirstOrDefaultAsync(o => o.Id == request.Id);
+            var order = await _ctx.Orders.FirstOrDefaultAsync(o => o.Id == request.Id, cancellationToken: cancellationToken);
             
             
             if (order is null)
             {
-                var error = new Error
-                {
-                    Code = ErrorCode.NotFound,
-                    Message = $"Post with id {request.Id} not found"
-                };
-            
-                result.IsError = true;
-                result.Errors.Add(error);
+                result.AddError(ErrorCode.NotFound,
+                    string.Format(OrderErrorMessages.OrderNotFound, request.Id));
                 return result;
             }
 
@@ -47,13 +41,7 @@ public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, Opera
         }
         catch (Exception exception)
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.UnknownError,
-                Message = exception.Message
-            };
-            result.Errors.Add(error);
+            result.AddUnknownError(exception.Message);
         }
 
         return result;

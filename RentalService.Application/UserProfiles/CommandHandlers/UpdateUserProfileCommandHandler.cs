@@ -30,14 +30,8 @@ public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfile
 
             if (profile is null)
             {
-                var error = new Error
-                {
-                    Code = ErrorCode.NotFound,
-                    Message = $"User with id {request.Id} not found"
-                };
-
-                result.IsError = true;
-                result.Errors.Add(error);
+                result.AddError(ErrorCode.NotFound,
+                    string.Format(UserProfileErrorMessages.UserProfileNotFound, request.Id));
                 return result;
             }
 
@@ -56,27 +50,11 @@ public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfile
         }
         catch (BasicInfoNotValidException exception)
         {
-            exception.ValidationErrors.ForEach(e =>
-            {
-                result.IsError = true;
-                var error = new Error
-                {
-                    Code = ErrorCode.ValidationError,
-                    Message = e
-                };
-
-                result.Errors.Add(error);
-            });
+            exception.ValidationErrors.ForEach(e => { result.AddValidationError(e); });
         }
         catch (Exception exception)
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.UnknownError,
-                Message = exception.Message
-            };
-            result.Errors.Add(error);
+            result.AddUnknownError(exception.Message);
         }
 
 

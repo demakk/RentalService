@@ -47,6 +47,6 @@ public class IdentityController : BaseController
 
         var token = new AuthenticationResult { Token = response.Payload };
         
-        return Ok(token);
+        return response.IsError ? HandleErrorResponse(response.Errors) : Ok(token);
     }
 }

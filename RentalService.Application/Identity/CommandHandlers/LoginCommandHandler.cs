@@ -40,16 +40,15 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, OperationResult
             if (!validationResult) return result;
 
             var profile = await _ctx.UserProfiles
-                .FirstOrDefaultAsync(p => p.IdentityId == identityUser.Id);
+                .FirstOrDefaultAsync(p => p.IdentityId == identityUser.Id, cancellationToken: cancellationToken);
             
             result.Payload = GetJwtString(identityUser, profile);
-            return result;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            result.AddUnknownError(e.Message);
         }
+        return result;
     }
 
     private async Task<bool> ValidateIdentityUserAsync(IdentityUser identityUser,
@@ -57,13 +56,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, OperationResult
     {
         if (identityUser is null)
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.NotFound,
-                Message = $"Provided username does not exist"
-            };
-            result.Errors.Add(error);
+            result.AddError(ErrorCode.NotFound, IdentityErrorMessages.IdentityNotFound);
             return false;
         }
 
@@ -71,13 +64,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, OperationResult
 
         if (validPassword) return true;
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.PasswordNotValid,
-                Message = $"Provided password is incorrect"
-            };
-            result.Errors.Add(error);
+            result.AddError(ErrorCode.PasswordNotValid, IdentityErrorMessages.IncorrectPassword);
             return false;
         }
 

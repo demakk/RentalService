@@ -21,7 +21,6 @@ public class OrderController : BaseController
     public OrderController(IMapper mapper, IMediator mediator) : base(mapper, mediator)
     {
     }
-
     
     [HttpPost]
     [ValidateModel]

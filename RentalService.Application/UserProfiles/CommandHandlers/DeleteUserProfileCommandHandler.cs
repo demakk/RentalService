@@ -29,14 +29,8 @@ public class DeleteUserProfileCommandHandler : IRequestHandler<DeleteUserProfile
 
             if (profileToDelete is null)
             {
-                var error = new Error
-                {
-                    Code = ErrorCode.NotFound,
-                    Message = $"User with id {request.Id} not found"
-                };
-            
-                result.IsError = true;
-                result.Errors.Add(error);
+                result.AddError(ErrorCode.NotFound,
+                    string.Format(UserProfileErrorMessages.UserProfileNotFound, request.Id));
                 return result;
             }
 
@@ -47,16 +41,8 @@ public class DeleteUserProfileCommandHandler : IRequestHandler<DeleteUserProfile
         }
         catch (Exception exception)
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.UnknownError,
-                Message = exception.Message
-            };
-            result.Errors.Add(error);
+            result.AddUnknownError(exception.Message);
         }
-        
-
         return result;
     }
 }

@@ -30,14 +30,8 @@ public class GetUserProfileByIdQueryHandler : IRequestHandler<GetUserProfileById
         
             if (profile is null)
             {
-                var error = new Error
-                {
-                    Code = ErrorCode.NotFound,
-                    Message = $"User with id {request.Id} not found"
-                };
-            
-                result.IsError = true;
-                result.Errors.Add(error);
+                result.AddError(ErrorCode.NotFound,
+                    string.Format(UserProfileErrorMessages.UserProfileNotFound));
                 return result;
             }
         
@@ -45,13 +39,7 @@ public class GetUserProfileByIdQueryHandler : IRequestHandler<GetUserProfileById
         }
         catch (Exception exception)
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.UnknownError,
-                Message = exception.Message
-            };
-            result.Errors.Add(error);
+            result.AddUnknownError(exception.Message);
         }
 
         return result;

@@ -41,12 +41,6 @@ public class Item
         validationResult.Errors.ForEach(error => 
                 exception.ValidationErrors.Add(error.ErrorMessage)
             );
-        
-        // foreach (var error in validationResult.Errors)
-        // {
-        //     exception.ValidationErrors.Add(error.ErrorMessage);
-        // }
-
         throw exception;
     }
 
@@ -64,10 +58,33 @@ public class Item
     public void UpdateItem(Guid itemCategoryId, Guid manufacturerId, decimal initialPrice,
         decimal currentPrice, string description)
     {
-        ItemCategoryId = itemCategoryId;
-        ManufacturerId = manufacturerId;
-        InitialPrice = initialPrice;
-        CurrentPrice = currentPrice;
-        Description = description;
+        var validator = new ItemValidator();
+        
+        var itemToValidate = new Item
+        {
+            ItemCategoryId = itemCategoryId,
+            ManufacturerId = manufacturerId,
+            InitialPrice = initialPrice,
+            Description = description
+        };
+
+        var validationResult = validator.Validate(itemToValidate);
+
+        if (validationResult.IsValid)
+        {
+            ItemCategoryId = itemCategoryId;
+            ManufacturerId = manufacturerId;
+            InitialPrice = initialPrice;
+            CurrentPrice = currentPrice;
+            Description = description;
+            return;
+        }
+
+        var exception = new ItemNotValidException("The item is not valid");
+
+        validationResult.Errors.ForEach(error => 
+            exception.ValidationErrors.Add(error.ErrorMessage)
+        );
+        throw exception;
     }
 }

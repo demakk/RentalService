@@ -25,14 +25,8 @@ public class GetItemByIdQueryHandler : IRequestHandler<GetItemByIdQuery, Operati
             var item = await _ctx.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken: cancellationToken);
             if (item is null)
             {
-                var error = new Error
-                {
-                    Code = ErrorCode.NotFound,
-                    Message = $"User with id {request.Id} not found"
-                };
-            
-                result.IsError = true;
-                result.Errors.Add(error);
+                result.AddError(ErrorCode.NotFound,
+                    String.Format(ItemsErrorMessages.ItemNotFound, request.Id));
                 return result;
             }
         
@@ -40,13 +34,7 @@ public class GetItemByIdQueryHandler : IRequestHandler<GetItemByIdQuery, Operati
         }
         catch (Exception exception)
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.UnknownError,
-                Message = exception.Message
-            };
-            result.Errors.Add(error);
+            result.AddUnknownError(exception.Message);
         }
         return result;
     }

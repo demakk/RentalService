@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RentalService.Domain.Aggregates.Common;
 using RentalService.Domain.Aggregates.ItemAggregates;
 using RentalService.Domain.Aggregates.OrderAggregates;
+using RentalService.Domain.Aggregates.ShoppingCartAggregates;
 using RentalService.Domain.Aggregates.UserProfileAggregates;
 
 namespace RentalService.Dal;
@@ -19,6 +20,8 @@ public class DataContext : IdentityDbContext
     public DbSet<UserBasicInfo> UserBasicInfos { get; set; }
     public DbSet<UserProfile> UserProfiles { get; set; }
 
+    public DbSet<Cart> ShoppingCarts { get; set; }
+
     public DbSet<ItemCategory> ItemCategories { get; set; }
     public DbSet<Manufacturer> Manufacturers { get; set; }
     public DbSet<Item> Items { get; set; }
@@ -32,6 +35,11 @@ public class DataContext : IdentityDbContext
         // modelBuilder.Entity<OrderItemLink>(
         //     ol =>
         //         ol.HasNoKey());
+
+        modelBuilder.Entity<Cart>(
+            c => 
+                c.HasKey(p => p.ItemId)
+            );
         base.OnModelCreating(modelBuilder);
-    }
+    }   
 }

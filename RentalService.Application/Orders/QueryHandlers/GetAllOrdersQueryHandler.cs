@@ -23,19 +23,13 @@ public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, Opera
 
         try
         {
-            var orders = await _ctx.Orders.ToListAsync();
+            var orders = await _ctx.Orders.ToListAsync(cancellationToken: cancellationToken);
 
             result.Payload = orders;
         }
         catch (Exception exception)
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.UnknownError,
-                Message = exception.Message
-            };
-            result.Errors.Add(error);
+            result.AddUnknownError(exception.Message);
         }
 
         return result;

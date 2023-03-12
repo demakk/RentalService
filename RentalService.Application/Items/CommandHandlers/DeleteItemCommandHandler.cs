@@ -19,23 +19,24 @@ public class DeleteItemCommandHandler : IRequestHandler<DeleteItemCommand, Opera
     public async Task<OperationResult<Item>> Handle(DeleteItemCommand request, CancellationToken cancellationToken)
     {
         var result = new OperationResult<Item>();
-        var item = await _ctx.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken: cancellationToken);
-        if (item is null)
+        try
         {
-            var error = new Error
+            var item = await _ctx.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken: cancellationToken);
+            if (item is null)
             {
-                Code = ErrorCode.NotFound,
-                Message = $"Item with id {request.Id} not found"
-            };
-            
-            result.IsError = true;
-            result.Errors.Add(error);
-            return result;
-        }
+                result.AddError(ErrorCode.NotFound,
+                    string.Format(ItemsErrorMessages.ItemNotFound, request.Id));
+                return result;
+            }
 
-        _ctx.Items.Remove(item);
-        await _ctx.SaveChangesAsync(cancellationToken);
-        result.Payload = item;
+            _ctx.Items.Remove(item);
+            await _ctx.SaveChangesAsync(cancellationToken);
+            result.Payload = item;
+        }
+        catch (Exception e)
+        {
+            result.AddUnknownError(e.Message);
+        }
         return result;
     }
 }

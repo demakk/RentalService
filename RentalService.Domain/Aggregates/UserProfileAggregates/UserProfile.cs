@@ -8,7 +8,7 @@ public class UserProfile
     public DateTime LastModified { get; private set; }
     
     public UserBasicInfo UserBasicInfo { get; set; }
-
+    
     public static UserProfile CreateUserProfile(UserBasicInfo userBasicInfo, string identityId)
     {
         //TO DO: add validation, error handling strategies, error notification

@@ -27,13 +27,7 @@ public class GetAllItemsQueryHandler : IRequestHandler<GetAllItemsQuery, Operati
         }
         catch (Exception exception)
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.UnknownError,
-                Message = exception.Message
-            };
-            result.Errors.Add(error);
+            result.AddUnknownError(exception.Message);
         }
         return result;
     }

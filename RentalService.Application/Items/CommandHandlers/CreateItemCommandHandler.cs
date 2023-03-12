@@ -30,30 +30,13 @@ public class CreateItemCommandHandler : IRequestHandler<CreateItemCommand, Opera
         }
         catch (ItemNotValidException exception)
         {
-            result.IsError = true;
-            exception.ValidationErrors.ForEach(er =>
-                {
-                    var error = new Error
-                    {
-                        Code = ErrorCode.ValidationError,
-                        Message = er
-                    };
-                    result.Errors.Add(error);
-                }
-            );
+            exception.ValidationErrors.ForEach(er => { result.AddValidationError(er); });
         }
         catch (Exception exception)
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.UnknownError,
-                Message = exception.Message
-            };
-            result.Errors.Add(error);
+            result.AddUnknownError(exception.Message);
         }
-
-
+        
         return result;
     }
 }

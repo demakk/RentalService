@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -46,11 +45,11 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Operati
             
             await using var transaction = await _ctx.Database.BeginTransactionAsync(cancellationToken);
             
-            var identityCreationSucceeded = await IdentityCreationSucceededAsync(transaction, result, identityUser, request);
+            var identityCreationSucceeded = await IdentityCreationSucceededAsync(transaction, result, identityUser, request, cancellationToken);
             
             if (!identityCreationSucceeded) return result;
             
-            var profile = await CreateUserProfile(request, identityUser, transaction);
+            var profile = await CreateUserProfile(request, identityUser, transaction, cancellationToken);
 
             result.Payload = GetJwtString(identityUser, profile);
 
@@ -58,28 +57,12 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Operati
         }
         catch (BasicInfoNotValidException exception)
         {
-            result.IsError = true;
-            exception.ValidationErrors.ForEach(e =>
-            {
-                var error = new Error()
-                {
-                    Code = ErrorCode.ValidationError,
-                    Message = e
-                };
-                result.Errors.Add(error);
-            });
+            exception.ValidationErrors.ForEach(e => { result.AddError(ErrorCode.ValidationError, e); });
         }
         catch (Exception exception)
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.UnknownError,
-                Message = exception.Message
-            };
-            result.Errors.Add(error);
+            result.AddUnknownError(exception.Message);
         }
-
         return result;
     }
 
@@ -91,39 +74,28 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Operati
 
         if (existingIdentity is null) return false;
         
-        result.IsError = true;
-        var error = new Error
-        {
-            Code = ErrorCode.IdentityUserAlreadyExists,
-            Message = "Provided username already exists"
-        };
-        result.Errors.Add(error);
+        result.AddError(ErrorCode.IdentityUserAlreadyExists, IdentityErrorMessages.UserAlreadyExists);
         return true;
-
     }
 
     private async Task<bool> IdentityCreationSucceededAsync(IDbContextTransaction transaction,
-        OperationResult<string> result, IdentityUser identityUser, RegisterIdentity request)
+        OperationResult<string> result, IdentityUser identityUser, RegisterIdentity request, CancellationToken cancellationToken)
     {
         var creationResult =  await _userManager.CreateAsync(identityUser, request.Password);
 
         if (creationResult.Succeeded) return true;
         
-        result.IsError = true;
         foreach (var error in creationResult.Errors)
         {
-            result.Errors.Add(new Error
-            {
-                Code = ErrorCode.IdentityCreationFailed,
-                Message = error.Description
-            });   
+            result.AddError(ErrorCode.IdentityCreationFailed, error.Description);
         }
-        await transaction.RollbackAsync();
+        
+        await transaction.RollbackAsync(cancellationToken);
         return false;
     }
 
     private async Task<UserProfile>  CreateUserProfile(RegisterIdentity request, IdentityUser identityUser,
-        IDbContextTransaction transaction)
+        IDbContextTransaction transaction, CancellationToken cancellationToken)
     {
         try
         {
@@ -134,15 +106,15 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Operati
             
             _ctx.UserProfiles.Add(profile);
             
-            await _ctx.SaveChangesAsync();
+            await _ctx.SaveChangesAsync(cancellationToken);
             
-            await transaction.CommitAsync();
+            await transaction.CommitAsync(cancellationToken);
             
             return profile;
         }
-        catch (Exception e)
+        catch
         {
-            await transaction.RollbackAsync();
+            await transaction.RollbackAsync(cancellationToken);
             throw;
         }
 

@@ -356,14 +356,15 @@ namespace RentalService.Dal.Migrations
 
             modelBuilder.Entity("RentalService.Domain.Aggregates.OrderAggregates.OrderItemLink", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("ActualReturnDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ItemId")
                         .HasColumnType("uniqueidentifier");
@@ -374,11 +375,36 @@ namespace RentalService.Dal.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("ItemId");
 
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItemLinks");
+                });
+
+            modelBuilder.Entity("RentalService.Domain.Aggregates.ShoppingCartAggregates.Cart", b =>
+                {
+                    b.Property<Guid>("ItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ClearDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ItemId");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("RentalService.Domain.Aggregates.UserProfileAggregates.UserBasicInfo", b =>

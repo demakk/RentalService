@@ -21,27 +21,29 @@ public class UpdateItemStatusCommandHandler : IRequestHandler<UpdateItemStatusCo
     public async Task<OperationResult<Item>> Handle(UpdateItemStatusCommand request, CancellationToken cancellationToken)
     {
         var result = new OperationResult<Item>();
-        var item = await _ctx.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken: cancellationToken);
-        if (item is null)
+        try
         {
-            var error = new Error
+            var item = await _ctx.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken: cancellationToken);
+            if (item is null)
             {
-                Code = ErrorCode.NotFound,
-                Message = $"Item with id {request.Id} not found"
-            };
-            
-            result.IsError = true;
-            result.Errors.Add(error);
-            return result;
+                result.AddError(ErrorCode.NotFound,
+                    string.Format(ItemsErrorMessages.ItemNotFound, request.Id));
+                return result;
+            }
+        
+            item.ChangeItemStatus();
+
+            _ctx.Items.Update(item);
+            await _ctx.SaveChangesAsync(cancellationToken);
+
+            result.Payload = item;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
         
-        item.ChangeItemStatus();
-
-        _ctx.Items.Update(item);
-        await _ctx.SaveChangesAsync(cancellationToken);
-
-        result.Payload = item;
         return result;
-
     }
 }

@@ -1,9 +1,11 @@
-﻿using MediatR;
+﻿using System.Diagnostics.CodeAnalysis;
+using MediatR;
 using RentalService.Application.Enums;
 using RentalService.Application.Models;
 using RentalService.Application.Orders.Commands;
 using RentalService.Dal;
 using RentalService.Domain.Aggregates.OrderAggregates;
+using RentalService.Domain.Exceptions;
 
 namespace RentalService.Application.Orders.CommandHandlers;
 
@@ -22,35 +24,29 @@ public class CreateOrderItemCommandHandler : IRequestHandler<CreateOrderItemComm
 
         try
         {
-            var exists = _ctx.Orders.Any(o => o.Id == request.OrderId);
-            if (!exists)
+            var orderExists = _ctx.Orders.Any(o => o.Id == request.OrderId);
+            if (!orderExists)
             {
-                var error = new Error
-                {
-                    Code = ErrorCode.NotFound,
-                    Message = $"Order with id {request.OrderId} not found"
-                };
-            
-                result.IsError = true;
-                result.Errors.Add(error);
+                result.AddError(ErrorCode.NotFound,
+                    string.Format(OrderErrorMessages.OrderNotFound, request.OrderId));
                 return result;
             }
+
             var orderItem =
                 OrderItemLink.CreateOrderItemLink(request.ItemId, request.OrderId,
                     request.StartDate, request.EndDate);
+
             _ctx.OrderItemLinks.Add(orderItem);
-            await _ctx.SaveChangesAsync(cancellationToken);  
+            await _ctx.SaveChangesAsync(cancellationToken);
             result.Payload = orderItem;
+        }
+        catch (OrderNotValidException exception)
+        {
+            exception.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));
         }
         catch (Exception exception)
         {
-            result.IsError = true;
-            var error = new Error
-            {
-                Code = ErrorCode.UnknownError,
-                Message = exception.Message
-            };
-            result.Errors.Add(error);
+            result.AddUnknownError(exception.Message);
         }
 
         return result;
