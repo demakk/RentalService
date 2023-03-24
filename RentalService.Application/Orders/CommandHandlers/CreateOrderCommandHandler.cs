@@ -7,11 +7,12 @@ using RentalService.Domain.Aggregates.OrderAggregates;
 
 namespace RentalService.Application.Orders.CommandHandlers;
 
-public class CreateOrderCommandHandler : DataContextInjector, IRequestHandler<CreateOrderCommand, OperationResult<Order>>
+public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, OperationResult<Order>>
 {
-    public CreateOrderCommandHandler(DataContext ctx) : base(ctx)
+    private readonly DataContext _ctx;
+    public CreateOrderCommandHandler(DataContext ctx)
     {
-        
+        _ctx = ctx;
     }
     
     public async Task<OperationResult<Order>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)

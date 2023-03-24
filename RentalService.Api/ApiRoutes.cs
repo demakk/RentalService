@@ -29,6 +29,12 @@ public static class ApiRoutes
     {
         public const string Login = "login";
         public const string Registration = "registation";
+        public const string IdentityById = "{identityUserId}";
+    }
+
+    public static class Cart
+    {
+        public const string CartRecordId = "{cartId}";
     }
 
 }

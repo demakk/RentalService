@@ -1,4 +1,5 @@
-﻿using RentalService.Domain.Exceptions;
+﻿using RentalService.Domain.Aggregates.ShoppingCartAggregates;
+using RentalService.Domain.Exceptions;
 using RentalService.Domain.Validators.ItemValidators;
 
 namespace RentalService.Domain.Aggregates.ItemAggregates;
@@ -16,6 +17,7 @@ public class Item
     //nav properties
     public ItemCategory ItemCategory { get; private set; }
     public Manufacturer Manufacturer { get; private set; }
+    public Cart Cart { get; set; }
     
     
     //factory methods

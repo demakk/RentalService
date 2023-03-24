@@ -32,14 +32,9 @@ public class DataContext : IdentityDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // modelBuilder.Entity<OrderItemLink>(
-        //     ol =>
-        //         ol.HasNoKey());
 
-        modelBuilder.Entity<Cart>(
-            c => 
-                c.HasKey(p => p.ItemId)
-            );
+        
+
         base.OnModelCreating(modelBuilder);
     }   
 }

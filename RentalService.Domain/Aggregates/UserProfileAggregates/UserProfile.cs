@@ -1,4 +1,6 @@
-﻿namespace RentalService.Domain.Aggregates.UserProfileAggregates;
+﻿using RentalService.Domain.Aggregates.ShoppingCartAggregates;
+
+namespace RentalService.Domain.Aggregates.UserProfileAggregates;
 
 public class UserProfile
 {
@@ -8,6 +10,7 @@ public class UserProfile
     public DateTime LastModified { get; private set; }
     
     public UserBasicInfo UserBasicInfo { get; set; }
+    public IEnumerable<Cart> CartRecords { get; set; }
     
     public static UserProfile CreateUserProfile(UserBasicInfo userBasicInfo, string identityId)
     {

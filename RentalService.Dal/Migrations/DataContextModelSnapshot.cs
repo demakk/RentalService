@@ -386,7 +386,7 @@ namespace RentalService.Dal.Migrations
 
             modelBuilder.Entity("RentalService.Domain.Aggregates.ShoppingCartAggregates.Cart", b =>
                 {
-                    b.Property<Guid>("ItemId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -396,13 +396,21 @@ namespace RentalService.Dal.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserProfileId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ItemId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId")
+                        .IsUnique();
+
+                    b.HasIndex("UserProfileId");
 
                     b.ToTable("ShoppingCarts");
                 });
@@ -610,6 +618,23 @@ namespace RentalService.Dal.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("RentalService.Domain.Aggregates.ShoppingCartAggregates.Cart", b =>
+                {
+                    b.HasOne("RentalService.Domain.Aggregates.ItemAggregates.Item", "Item")
+                        .WithOne("Cart")
+                        .HasForeignKey("RentalService.Domain.Aggregates.ShoppingCartAggregates.Cart", "ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RentalService.Domain.Aggregates.UserProfileAggregates.UserProfile", null)
+                        .WithMany("CartRecords")
+                        .HasForeignKey("UserProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+                });
+
             modelBuilder.Entity("RentalService.Domain.Aggregates.UserProfileAggregates.UserBasicInfo", b =>
                 {
                     b.HasOne("RentalService.Domain.Aggregates.Common.City", null)
@@ -646,6 +671,12 @@ namespace RentalService.Dal.Migrations
                     b.Navigation("Manufacturers");
                 });
 
+            modelBuilder.Entity("RentalService.Domain.Aggregates.ItemAggregates.Item", b =>
+                {
+                    b.Navigation("Cart")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RentalService.Domain.Aggregates.ItemAggregates.ItemCategory", b =>
                 {
                     b.Navigation("Items");
@@ -663,6 +694,8 @@ namespace RentalService.Dal.Migrations
 
             modelBuilder.Entity("RentalService.Domain.Aggregates.UserProfileAggregates.UserProfile", b =>
                 {
+                    b.Navigation("CartRecords");
+
                     b.Navigation("UserBasicInfo")
                         .IsRequired();
                 });

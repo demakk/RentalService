@@ -7,26 +7,34 @@ namespace RentalService.Api.Filters;
 public class ValidateGuidAttribute :ActionFilterAttribute
 {
 
-    private readonly string _key;
-    public ValidateGuidAttribute(string key)
+    private readonly List<string> _keys;
+    public ValidateGuidAttribute(params string[] keys)
     {
-        _key = key;
+        _keys = keys.ToList();
     }
     
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-        if (!context.ActionArguments.TryGetValue(_key, out var value)) return;
 
-        if (Guid.TryParse(value?.ToString(), out _)) return;
-        
-        var apiError = new ErrorResponse
+        var hasError = false;
+        var apiError = new ErrorResponse();
+        _keys.ForEach(k =>
         {
-            Timestamp = DateTime.Now,
-            StatusPhrase = "Bad request",
-            StatusCode = 400,
-        };
-        
-        apiError.Errors.Add($"The inputted identifier {value} is in wrong format");
+            if (!context.ActionArguments.TryGetValue(k, out var value) ||
+                !Guid.TryParse(value?.ToString(), out _)) hasError = true;
+
+            if (hasError)
+            {
+                apiError.Errors.Add($"The inputted identifier {k} is in wrong format");
+            }
+        });
+
+        if (!hasError) return;
+
+        apiError.Timestamp = DateTime.Now;
+        apiError.StatusPhrase = "Bad request";
+        apiError.StatusCode = 400;
+
         context.Result = new JsonResult(apiError) { StatusCode = 400 };
     }
     

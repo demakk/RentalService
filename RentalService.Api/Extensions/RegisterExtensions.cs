@@ -9,7 +9,7 @@ public static class RegisterExtensions
     public static void RegisterServices(this WebApplicationBuilder builder, Type scanningType)
     {
         var registers = GetRegisters<IWebApplicationBuilderRegister>(scanningType);
-
+        
         foreach (var register in registers)
         {
             register.RegisterServices(builder);

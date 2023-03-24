@@ -1,6 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
+using Dapper;
 using MediatR;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RentalService.Application.Enums;
 using RentalService.Application.Models;
 using RentalService.Application.ShoppingCart.Commands;
@@ -12,12 +15,12 @@ namespace RentalService.Application.ShoppingCart.CommandHandlers;
 
 public class CreateCartRecordCommandHandler : IRequestHandler<CreateCartRecordCommand, OperationResult<string>>
 {
+    
+    private readonly IConfiguration _configuration;
 
-    private readonly DataContext _ctx;
-
-    public CreateCartRecordCommandHandler(DataContext ctx)
+    public CreateCartRecordCommandHandler(IConfiguration configuration)
     {
-        _ctx = ctx;
+        _configuration = configuration;
     }
     
 
@@ -29,39 +32,33 @@ public class CreateCartRecordCommandHandler : IRequestHandler<CreateCartRecordCo
         {
             var cart = Cart.CreateShoppingCartRecord(request.UserProfileId, request.ItemId);
 
-            string insert = $"INSERT INTO ShoppingCart (UserProfileId, ItemId, ClearDate)" +
-                            $" VALUES ({cart.UserProfileId}, {cart.ItemId}, {cart.ClearDate})";
+            var newItem = new
+            {
+                UserProfileId = cart.UserProfileId,
+                ItemId = cart.ItemId,
+                ClearDate = cart.ClearDate
+            };
 
-            var fs = FormattableStringFactory.Create(insert);
+            string sql = "INSERT INTO ShoppingCarts (UserProfileId, ItemId, ClearDate)" +
+                         "VALUES (@UserProfileId, @ItemId, @ClearDate)";
 
-            var res = _ctx.ShoppingCarts.FromSqlInterpolated(fs);
+            var connection = new SqlConnection(_configuration.GetConnectionString("DapperString"));
+            await connection.OpenAsync(cancellationToken);
 
+            var res = await connection.ExecuteAsync(sql, newItem);
             
-            await _ctx.SaveChangesAsync();
+            await connection.CloseAsync();
             
             result.Payload = "Probably successful";
             return result;
         }
         catch (ShoppingCartNotValidException exception)
         {
-            exception.ValidationErrors.ForEach(e =>
-            {
-                var error = new Error
-                {
-                    Message = e,
-                    Code = ErrorCode.ValidationError
-                };
-                result.Errors.Add(error);
-            });
+            exception.ValidationErrors.ForEach(e => result.AddValidationError(e));
         }
         catch (Exception e)
         {
-            var error = new Error
-            {
-                Message = e.Message,
-                Code = ErrorCode.UnknownError
-            };
-            result.Errors.Add(error);
+            result.AddUnknownError(e.Message);
         }
 
         return result;

@@ -13,7 +13,6 @@ public class UserProfileMaps : Profile
     public UserProfileMaps()
     {
         CreateMap<UserContactCreate, UserContact>();
-        CreateMap<UserProfileCreate, CreateUserProfileCommand>();
         CreateMap<UserProfileCreate, UpdateUserProfileCommand>();
         CreateMap<UserBasicInfo, BasicInfoResponse>();
         
