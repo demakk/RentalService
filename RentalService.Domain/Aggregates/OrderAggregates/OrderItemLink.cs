@@ -9,7 +9,7 @@ public class OrderItemLink
     public Guid OrderId { get; private set; }
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }
-    public DateTime ActualReturnDate { get; private set; }
+    public DateTime? ActualReturnDate { get; private set; }
 
     //nav properties
     public Item Item { get; private set; }
@@ -18,9 +18,10 @@ public class OrderItemLink
     //factory methods
     public static OrderItemLink CreateOrderItemLink(Guid itemId, Guid orderId, DateTime startDate, DateTime endDate)
     {   
-        //TO DO: Validate start, end dates, and Guid's (TryParse)
+        //TO DO: Validate start, end dates
         var orderItemLink = new OrderItemLink()
         {
+            Id = Guid.NewGuid(),
             ItemId = itemId,
             OrderId = orderId,
             StartDate = startDate,

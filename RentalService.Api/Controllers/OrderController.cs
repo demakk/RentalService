@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentalService.Api.Contracts.OrderContracts.Requests;
 using RentalService.Api.Contracts.OrderContracts.Responses;
+using RentalService.Api.Extensions;
 using RentalService.Api.Filters;
 using RentalService.Application.Orders.CommandHandlers;
 using RentalService.Application.Orders.Commands;
@@ -23,10 +24,10 @@ public class OrderController : BaseController
     }
     
     [HttpPost]
-    [ValidateModel]
-    public async Task<IActionResult> CreateOrder([FromBody] OrderCreate order)
+    public async Task<IActionResult> CreateOrder()
     {
-        var command = new CreateOrderCommand { UserProfileId = order.UserProfileId};
+        var userProfileId = HttpContext.GetUserProfileIdClaimValue();
+        var command = new CreateOrderCommand { UserProfileId = userProfileId};
 
         var response = await _mediator.Send(command);
 

@@ -6,8 +6,8 @@ public class Order
 {
     public Guid Id { get; private set; }
     public Guid UserProfileId { get; private set; }
-    public DateTime ActualRentDate { get; private set; }
-    public decimal TotalPrice { get; private set; }
+    public DateTime? ActualRentDate { get; private set; }
+    public decimal? TotalPrice { get; private set; }
 
 
     //nav properties
@@ -18,6 +18,7 @@ public class Order
     {
         return new Order
         {
+            Id = Guid.NewGuid(),
             UserProfileId = userProfileId
         };
     }

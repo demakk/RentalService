@@ -42,7 +42,7 @@ public class CreateOrderItemCommandHandler : IRequestHandler<CreateOrderItemComm
         }
         catch (OrderNotValidException exception)
         {
-            exception.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));
+            exception.ValidationErrors.ForEach(er => result.AddValidationError(er));
         }
         catch (Exception exception)
         {
