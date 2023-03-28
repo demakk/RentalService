@@ -9,7 +9,7 @@ using RentalService.Domain.Exceptions;
 
 namespace RentalService.Application.UserProfiles.CommandHandlers;
 
-public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfileCommand, OperationResult<UserProfile>>
+public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfileCommand, GenericOperationResult<UserProfile>>
 {
     private readonly DataContext _ctx;
 
@@ -18,9 +18,9 @@ public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfile
         _ctx = ctx;
     }
     
-    public async Task<OperationResult<UserProfile>> Handle(UpdateUserProfileCommand request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<UserProfile>> Handle(UpdateUserProfileCommand request, CancellationToken cancellationToken)
     {
-        var result = new OperationResult<UserProfile>();
+        var result = new GenericOperationResult<UserProfile>();
         try
         {
             var profile = await _ctx.UserProfiles

@@ -13,18 +13,18 @@ using RentalService.Domain.Exceptions;
 
 namespace RentalService.Application.Orders.CommandHandlers;
 
-public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, OperationResult<Order>>
+public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, GenericOperationResult<Order>>
 {
     private readonly string _connectionString;
-    private readonly OperationResult<Order> _result;
+    private readonly GenericOperationResult<Order> _result;
 
     public CreateOrderCommandHandler(IConfiguration configuration)
     {
         _connectionString = configuration.GetConnectionString("DapperString");
-        _result = new OperationResult<Order>();
+        _result = new GenericOperationResult<Order>();
     }
     
-    public async Task<OperationResult<Order>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<Order>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -62,7 +62,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ope
                         new {TotalPrice = total, OrderId = orderId }, transaction);
 
                 //Set item status to unavailable
-                
+                await connection.ExecuteAsync(Queries.SetItemUnavailable, new {UserProfileId = request.UserProfileId}, transaction);
                 
                 await transaction.CommitAsync(cancellationToken);
                 _result.Payload = order;
@@ -133,7 +133,8 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ope
         public const string UpdateOrderWithTotalPrice = "UPDATE Orders SET TotalPrice = @TotalPrice" +
                                                         " WHERE Id = @OrderId";
 
-        public const string SetItemUnavailable = "UPDATE Items SET ItemStatus = 'available'" +
-                                                 "WHERE ItemId = @ItemId";
+        public const string SetItemUnavailable = "UPDATE i SET ItemStatus = 'unavailable'" +
+                                                 " FROM Items i INNER JOIN ShoppingCarts sc ON sc.ItemId = i.Id" +
+                                                 " WHERE sc.UserProfileid = @UserProfileId";
     }
 }

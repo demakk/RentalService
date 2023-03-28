@@ -12,7 +12,7 @@ public class Item
     public decimal InitialPrice { get; private set; }
     public decimal CurrentPrice { get; private set; }
     public string Description { get; private set; }
-    public ItemStatus ItemStatus { get; private set; }
+    public string ItemStatus { get; private set; }
     
     //nav properties
     public ItemCategory ItemCategory { get; private set; }
@@ -28,10 +28,13 @@ public class Item
         
         var itemToValidate = new Item
         {
+            Id = Guid.NewGuid(),
             ItemCategoryId = itemCategoryId,
             ManufacturerId = manufacturerId,
             InitialPrice = initialPrice,
-            Description = description
+            CurrentPrice = initialPrice,
+            Description = description,
+            ItemStatus = "Available"
         };
 
         var validationResult = validator.Validate(itemToValidate);
@@ -46,27 +49,17 @@ public class Item
         throw exception;
     }
 
-    public void ChangeItemStatus()
-    {
-        if (ItemStatus == ItemStatus.Available)
-        {
-            ItemStatus = ItemStatus.Booked;
-            return;
-        }
-
-        if (ItemStatus == ItemStatus.Booked) ItemStatus = ItemStatus.Available;
-    }
-
-    public void UpdateItem(Guid itemCategoryId, Guid manufacturerId, decimal initialPrice,
+    public static Item ValidateToUpdateItem(Guid id, Guid itemCategoryId, Guid manufacturerId,
         decimal currentPrice, string description)
     {
         var validator = new ItemValidator();
         
         var itemToValidate = new Item
         {
+            Id = id,
             ItemCategoryId = itemCategoryId,
             ManufacturerId = manufacturerId,
-            InitialPrice = initialPrice,
+            CurrentPrice = currentPrice,
             Description = description
         };
 
@@ -74,12 +67,7 @@ public class Item
 
         if (validationResult.IsValid)
         {
-            ItemCategoryId = itemCategoryId;
-            ManufacturerId = manufacturerId;
-            InitialPrice = initialPrice;
-            CurrentPrice = currentPrice;
-            Description = description;
-            return;
+            return itemToValidate;
         }
 
         var exception = new ItemNotValidException("The item is not valid");

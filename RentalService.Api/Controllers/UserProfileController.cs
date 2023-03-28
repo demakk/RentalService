@@ -14,9 +14,13 @@ namespace RentalService.Api.Controllers;
 [Route(ApiRoutes.BaseRoute)]
 public class UserProfileController : BaseController
 {
-    public UserProfileController(IMapper mapper, IMediator mediator) : base(mapper, mediator)
+    private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
+    
+    public UserProfileController(IMapper mapper, IMediator mediator)
     {
-        
+        _mapper = mapper;
+        _mediator = mediator;
     }
 
     [HttpGet]

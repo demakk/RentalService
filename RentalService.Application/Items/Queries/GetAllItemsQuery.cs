@@ -4,7 +4,7 @@ using RentalService.Domain.Aggregates.ItemAggregates;
 
 namespace RentalService.Application.Items.Queries;
 
-public class GetAllItemsQuery : IRequest<OperationResult<List<Item>>>
+public class GetAllItemsQuery : IRequest<GenericOperationResult<List<Item>>>
 {
     
 }

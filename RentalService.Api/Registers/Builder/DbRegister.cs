@@ -11,6 +11,8 @@ public class DbRegister : IWebApplicationBuilderRegister
         var cs = builder.Configuration.GetConnectionString("Default");
         builder.Services.AddDbContext<DataContext>(options => { options.UseSqlServer(cs);});
 
+        builder.Services.AddScoped<DapperContext>();
+        
         builder.Services.AddIdentityCore<IdentityUser>(options =>
             {
                 options.Password.RequireDigit = false;

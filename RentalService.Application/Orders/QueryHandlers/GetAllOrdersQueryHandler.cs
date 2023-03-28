@@ -8,7 +8,7 @@ using RentalService.Domain.Aggregates.OrderAggregates;
 
 namespace RentalService.Application.Orders.QueryHandlers;
 
-public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, OperationResult<List<Order>>>
+public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, GenericOperationResult<List<Order>>>
 {
     private readonly DataContext _ctx;
 
@@ -17,9 +17,9 @@ public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, Opera
         _ctx = ctx;
     }
     
-    public async Task<OperationResult<List<Order>>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<List<Order>>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
     {
-        var result = new OperationResult<List<Order>>();
+        var result = new GenericOperationResult<List<Order>>();
 
         try
         {

@@ -13,7 +13,7 @@ using RentalService.Domain.Exceptions;
 
 namespace RentalService.Application.ShoppingCart.CommandHandlers;
 
-public class CreateCartRecordCommandHandler : IRequestHandler<CreateCartRecordCommand, OperationResult<string>>
+public class CreateCartRecordCommandHandler : IRequestHandler<CreateCartRecordCommand, GenericOperationResult<string>>
 {
     
     private readonly IConfiguration _configuration;
@@ -24,9 +24,9 @@ public class CreateCartRecordCommandHandler : IRequestHandler<CreateCartRecordCo
     }
     
 
-    public async Task<OperationResult<string>> Handle(CreateCartRecordCommand request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<string>> Handle(CreateCartRecordCommand request, CancellationToken cancellationToken)
     {
-        var result = new OperationResult<string>();
+        var result = new GenericOperationResult<string>();
 
         try
         {
@@ -34,13 +34,14 @@ public class CreateCartRecordCommandHandler : IRequestHandler<CreateCartRecordCo
 
             var newItem = new
             {
+                Id = cart.Id,
                 UserProfileId = cart.UserProfileId,
                 ItemId = cart.ItemId,
                 ClearDate = cart.ClearDate
             };
 
-            string sql = "INSERT INTO ShoppingCarts (UserProfileId, ItemId, ClearDate)" +
-                         "VALUES (@UserProfileId, @ItemId, @ClearDate)";
+            string sql = "INSERT INTO ShoppingCarts (Id, UserProfileId, ItemId, ClearDate)" +
+                         "VALUES (@Id, @UserProfileId, @ItemId, @ClearDate)";
 
             var connection = new SqlConnection(_configuration.GetConnectionString("DapperString"));
             await connection.OpenAsync(cancellationToken);

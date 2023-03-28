@@ -9,18 +9,18 @@ using RentalService.Domain.Aggregates.ShoppingCartAggregates;
 
 namespace RentalService.Application.ShoppingCart.CommandHandlers;
 
-public class DeleteCartRecordHandler : IRequestHandler<DeleteCartRecordCommand, OperationResult<Cart>>
+public class DeleteCartRecordHandler : IRequestHandler<DeleteCartRecordCommand, GenericOperationResult<Cart>>
 {
-    private readonly OperationResult<Cart> _result;
+    private readonly GenericOperationResult<Cart> _result;
     private readonly string _connectionString;
 
     public DeleteCartRecordHandler(IConfiguration configuration)
     {
-        _result = new OperationResult<Cart>();
+        _result = new GenericOperationResult<Cart>();
         _connectionString = configuration.GetConnectionString("DapperString");
     }
     
-    public async Task<OperationResult<Cart>> Handle(DeleteCartRecordCommand request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<Cart>> Handle(DeleteCartRecordCommand request, CancellationToken cancellationToken)
     {
         try
         {

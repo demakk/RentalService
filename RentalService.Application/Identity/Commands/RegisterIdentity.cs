@@ -4,7 +4,7 @@ using RentalService.Domain.Aggregates.UserProfileAggregates;
 
 namespace RentalService.Application.Identity.Commands;
 
-public class RegisterIdentity : IRequest<OperationResult<string>>
+public class RegisterIdentity : IRequest<GenericOperationResult<string>>
 {
 
     public string Username { get; set; }

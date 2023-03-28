@@ -1,5 +1,5 @@
-﻿using MediatR;
-using RentalService.Application.Enums;
+﻿using Dapper;
+using MediatR;
 using RentalService.Application.Items.Commands;
 using RentalService.Application.Models;
 using RentalService.Dal;
@@ -8,24 +8,34 @@ using RentalService.Domain.Exceptions;
 
 namespace RentalService.Application.Items.CommandHandlers;
 
-public class CreateItemCommandHandler : IRequestHandler<CreateItemCommand, OperationResult<Item>>
+public class CreateItemCommandHandler : IRequestHandler<CreateItemCommand, GenericOperationResult<Item>>
 {
-    private readonly DataContext _ctx;
+    private readonly DapperContext _ctx;
 
-    public CreateItemCommandHandler(DataContext ctx)
+    public CreateItemCommandHandler(DapperContext ctx)
     {
         _ctx = ctx;
     }
     
-    public async Task<OperationResult<Item>> Handle(CreateItemCommand request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<Item>> Handle(CreateItemCommand request, CancellationToken cancellationToken)
     {
-        var result = new OperationResult<Item>();
+        var result = new GenericOperationResult<Item>();
         try
         {
+            var connection = _ctx.Connect();
+            connection.Open();
+            
             var item = Item.CreateItem(request.ItemCategoryId, request.ManufacturerId,
                 request.InitialPrice, request.Description);
-            _ctx.Items.Add(item);
-            await _ctx.SaveChangesAsync(cancellationToken: cancellationToken);
+
+            var entityToInsert = new
+            {
+                Id = item.Id, ItemCategoryId = item.ItemCategoryId, ManufacturerId = item.ManufacturerId,
+                InitialPrice = item.InitialPrice, CurrentPrice = item.CurrentPrice,
+                Description = item.Description, ItemStatus = item.ItemStatus
+            };
+
+            var res = await connection.ExecuteAsync(Queries.InsertItem, entityToInsert);
             result.Payload = item;
         }
         catch (ItemNotValidException exception)
@@ -38,5 +48,12 @@ public class CreateItemCommandHandler : IRequestHandler<CreateItemCommand, Opera
         }
         
         return result;
+    }
+    
+    private class Queries
+    {
+        public const string InsertItem 
+            = "INSERT INTO Items (Id, ItemCategoryId, ManufacturerId, InitialPrice, CurrentPrice, Description, ItemStatus)" +
+              " VALUES (@Id, @ItemCategoryId, @ManufacturerId, @InitialPrice, @CurrentPrice, @Description, @ItemStatus)";
     }
 }

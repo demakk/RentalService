@@ -8,7 +8,7 @@ using RentalService.Domain.Aggregates.UserProfileAggregates;
 
 namespace RentalService.Application.UserProfiles.QueryHandlers;
 
-public class GetAllUserProfilesQueryHandler : IRequestHandler<GetAllUserProfilesQuery, OperationResult<IEnumerable<UserProfile>>>
+public class GetAllUserProfilesQueryHandler : IRequestHandler<GetAllUserProfilesQuery, GenericOperationResult<IEnumerable<UserProfile>>>
 {
     private readonly DataContext _ctx;
 
@@ -17,10 +17,10 @@ public class GetAllUserProfilesQueryHandler : IRequestHandler<GetAllUserProfiles
         _ctx = ctx;
     }
 
-    public async Task<OperationResult<IEnumerable<UserProfile>>> Handle(GetAllUserProfilesQuery request,
+    public async Task<GenericOperationResult<IEnumerable<UserProfile>>> Handle(GetAllUserProfilesQuery request,
         CancellationToken cancellationToken)
     {
-        var result = new OperationResult<IEnumerable<UserProfile>>();
+        var result = new GenericOperationResult<IEnumerable<UserProfile>>();
 
         try
         {

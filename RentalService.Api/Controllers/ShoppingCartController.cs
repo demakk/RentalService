@@ -16,9 +16,13 @@ namespace RentalService.Api.Controllers;
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class ShoppingCartController : BaseController
 {
-    public ShoppingCartController(IMapper mapper, IMediator mediator) : base(mapper, mediator)
+    private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
+    
+    public ShoppingCartController(IMapper mapper, IMediator mediator)
     {
-        
+        _mapper = mapper;
+        _mediator = mediator;
     }
 
     [HttpPost]

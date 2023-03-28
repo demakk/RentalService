@@ -5,7 +5,7 @@ using RentalService.Domain.Aggregates.ShoppingCartAggregates;
 
 namespace RentalService.Application.ShoppingCart.Commands;
 
-public class CreateCartRecordCommand : IRequest<OperationResult<string>>
+public class CreateCartRecordCommand : IRequest<GenericOperationResult<string>>
 {
     public Guid ItemId { get; set; }
     public Guid UserProfileId { get; set; }

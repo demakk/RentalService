@@ -8,7 +8,7 @@ using RentalService.Domain.Aggregates.OrderAggregates;
 
 namespace RentalService.Application.Orders.QueryHandlers;
 
-public class GetOrderItemsByIdQueryHandler : IRequestHandler<GetOrderItemsByIdQuery, OperationResult<List<OrderItemLink>>>
+public class GetOrderItemsByIdQueryHandler : IRequestHandler<GetOrderItemsByIdQuery, GenericOperationResult<List<OrderItemLink>>>
 {
     private readonly DataContext _ctx;
 
@@ -17,9 +17,9 @@ public class GetOrderItemsByIdQueryHandler : IRequestHandler<GetOrderItemsByIdQu
         _ctx = ctx;
     }
     
-    public async Task<OperationResult<List<OrderItemLink>>> Handle(GetOrderItemsByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<List<OrderItemLink>>> Handle(GetOrderItemsByIdQuery request, CancellationToken cancellationToken)
     {
-        var result = new OperationResult<List<OrderItemLink>>();
+        var result = new GenericOperationResult<List<OrderItemLink>>();
         try
         {
             var orderItems = await _ctx.OrderItemLinks

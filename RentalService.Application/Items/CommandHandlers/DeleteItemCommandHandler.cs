@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Dapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RentalService.Application.Enums;
 using RentalService.Application.Items.Commands;
@@ -8,35 +9,41 @@ using RentalService.Domain.Aggregates.ItemAggregates;
 
 namespace RentalService.Application.Items.CommandHandlers;
 
-public class DeleteItemCommandHandler : IRequestHandler<DeleteItemCommand, OperationResult<Item>>
+public class DeleteItemCommandHandler : IRequestHandler<DeleteItemCommand, OperationResult>
 {
-    private readonly DataContext _ctx;
+    private readonly DapperContext _ctx;
+    private readonly OperationResult _result;
 
-    public DeleteItemCommandHandler(DataContext ctx)
+    public DeleteItemCommandHandler(DapperContext ctx)
     {
         _ctx = ctx;
+        _result = new OperationResult();
     }
-    public async Task<OperationResult<Item>> Handle(DeleteItemCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(DeleteItemCommand request, CancellationToken cancellationToken)
     {
-        var result = new OperationResult<Item>();
         try
         {
-            var item = await _ctx.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken: cancellationToken);
-            if (item is null)
-            {
-                result.AddError(ErrorCode.NotFound,
-                    string.Format(ItemsErrorMessages.ItemNotFound, request.Id));
-                return result;
-            }
+            var connection = _ctx.Connect();
+            connection.Open();
 
-            _ctx.Items.Remove(item);
-            await _ctx.SaveChangesAsync(cancellationToken);
-            result.Payload = item;
+            var deleteItemResponse = await connection.ExecuteAsync("DELETE FROM Items WHERE Id = @ItemId");
+            
+            if (deleteItemResponse == 0)
+            {
+                _result.AddError(ErrorCode.NotFound,
+                    string.Format(ItemsErrorMessages.ItemNotFound, request.Id));
+                return _result;
+            }
         }
         catch (Exception e)
         {
-            result.AddUnknownError(e.Message);
+            _result.AddUnknownError(e.Message);
         }
-        return result;
+        return _result;
+    }
+    
+    private class Queries
+    {
+        public const string DeleteItemById = "DELETE FROM Items WHERE Id = @ItemId";
     }
 }

@@ -1,6 +1,5 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using RentalService.Application.Enums;
+﻿using Dapper;
+using MediatR;
 using RentalService.Application.Items.Queries;
 using RentalService.Application.Models;
 using RentalService.Dal;
@@ -8,27 +7,32 @@ using RentalService.Domain.Aggregates.ItemAggregates;
 
 namespace RentalService.Application.Items.QueryHandlers;
 
-public class GetAllItemsQueryHandler : IRequestHandler<GetAllItemsQuery, OperationResult<List<Item>>>
+public class GetAllItemsQueryHandler : IRequestHandler<GetAllItemsQuery, GenericOperationResult<List<Item>>>
 {
-    private readonly DataContext _ctx;
+    private readonly DapperContext _ctx;
+    private readonly GenericOperationResult<List<Item>> _result;
 
-    public GetAllItemsQueryHandler(DataContext ctx)
+    public GetAllItemsQueryHandler(DapperContext ctx)
     {
         _ctx = ctx;
+        _result = new GenericOperationResult<List<Item>>();
     }
     
-    public async Task<OperationResult<List<Item>>> Handle(GetAllItemsQuery request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<List<Item>>> Handle(GetAllItemsQuery request, CancellationToken cancellationToken)
     {
-        var result = new OperationResult<List<Item>>();
         try
         {
-            var items = await _ctx.Items.ToListAsync(cancellationToken: cancellationToken);
-            result.Payload = items;
+            var connection = _ctx.Connect();
+            connection.Open();
+
+            var itemsResponse = await connection.QueryAsync<Item>("SELECT * FROM Items");
+            
+            _result.Payload = itemsResponse.ToList();
         }
         catch (Exception exception)
         {
-            result.AddUnknownError(exception.Message);
+            _result.AddUnknownError(exception.Message);
         }
-        return result;
+        return _result;
     }
 }

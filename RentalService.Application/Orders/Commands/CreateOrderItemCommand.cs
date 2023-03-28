@@ -4,7 +4,7 @@ using RentalService.Domain.Aggregates.OrderAggregates;
 
 namespace RentalService.Application.Orders.Commands;
 
-public class CreateOrderItemCommand : IRequest<OperationResult<OrderItemLink>>
+public class CreateOrderItemCommand : IRequest<GenericOperationResult<OrderItemLink>>
 {
     public Guid ItemId { get; set; }
     public Guid OrderId { get; set; }

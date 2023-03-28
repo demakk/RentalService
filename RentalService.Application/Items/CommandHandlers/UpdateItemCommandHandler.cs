@@ -1,5 +1,5 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using MediatR;
 using RentalService.Application.Enums;
 using RentalService.Application.Items.Commands;
 using RentalService.Application.Models;
@@ -9,46 +9,61 @@ using RentalService.Domain.Exceptions;
 
 namespace RentalService.Application.Items.CommandHandlers;
 
-public class UpdateItemCommandHandler : IRequestHandler<UpdateItemCommand, OperationResult<Item>>
+public class UpdateItemCommandHandler : IRequestHandler<UpdateItemCommand, GenericOperationResult<Item>>
 {
-    private readonly DataContext _ctx;
+    private readonly DapperContext _ctx;
+    private readonly GenericOperationResult<Item> _result;
 
-    public UpdateItemCommandHandler(DataContext ctx)
+    public UpdateItemCommandHandler(DapperContext ctx)
     {
         _ctx = ctx;
+        _result = new GenericOperationResult<Item>();
     }
     
-    public async Task<OperationResult<Item>> Handle(UpdateItemCommand request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<Item>> Handle(UpdateItemCommand request, CancellationToken cancellationToken)
     {
-        var result = new OperationResult<Item>();
         try
         {
-            var item = await _ctx.Items.FirstOrDefaultAsync(i => i.Id == request.Id,
-                cancellationToken: cancellationToken);
-            if (item is null)
-            {
-                result.AddError(ErrorCode.NotFound,
-                    string.Format(ItemsErrorMessages.ItemNotFound, request.Id));
-                return result;
-            }
+            var connection = _ctx.Connect();
+            connection.Open();
 
-            item.UpdateItem(request.ItemCategoryId, request.ManufacturerId, request.InitialPrice,
+            var item = Item.ValidateToUpdateItem(request.Id, request.ItemCategoryId, request.ManufacturerId,
                 request.CurrentPrice, request.Description);
 
-            _ctx.Items.Update(item);
-            await _ctx.SaveChangesAsync(cancellationToken);
+            var entityToUpdate = new
+            {
+                ItemCategoryId = request.ItemCategoryId, ManufacturerId = request.ManufacturerId,
+                CurrentPrice = request.CurrentPrice, Description = request.Description, ItemId = request.Id
+            };
+            
+            var itemResponse = await connection.ExecuteAsync(Queries.UpdateItemById, entityToUpdate);
 
-            result.Payload = item;
+            if (itemResponse == 0)
+            {
+                _result.AddError(ErrorCode.NotFound,
+                    string.Format(ItemsErrorMessages.ItemNotFound, request.Id));
+                return _result;
+            }
+            
+            _result.Payload = item;
         }
         catch (ItemNotValidException e)
         {
-            e.ValidationErrors.ForEach(error => result.AddError(ErrorCode.ValidationError, error));
+            e.ValidationErrors.ForEach(error => _result.AddError(ErrorCode.ValidationError, error));
         }
         catch (Exception e)
         {
-            result.AddUnknownError(e.Message);
+            _result.AddUnknownError(e.Message);
         }
         
-        return result;
+        return _result;
+    }
+    
+    private class Queries
+    {
+        public const string UpdateItemById 
+            = "UPDATE Items SET ItemCategoryId = @ItemCategoryId, ManufacturerId = @ManufacturerId," +
+              "CurrentPrice = @CurrentPrice, Description = @Description" +
+              " WHERE Id = @ItemId";
     }
 }

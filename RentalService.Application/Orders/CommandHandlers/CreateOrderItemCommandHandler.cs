@@ -9,7 +9,7 @@ using RentalService.Domain.Exceptions;
 
 namespace RentalService.Application.Orders.CommandHandlers;
 
-public class CreateOrderItemCommandHandler : IRequestHandler<CreateOrderItemCommand, OperationResult<OrderItemLink>>
+public class CreateOrderItemCommandHandler : IRequestHandler<CreateOrderItemCommand, GenericOperationResult<OrderItemLink>>
 {
     private readonly DataContext _ctx;
 
@@ -18,9 +18,9 @@ public class CreateOrderItemCommandHandler : IRequestHandler<CreateOrderItemComm
         _ctx = ctx;
     }
     
-    public async Task<OperationResult<OrderItemLink>> Handle(CreateOrderItemCommand request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<OrderItemLink>> Handle(CreateOrderItemCommand request, CancellationToken cancellationToken)
     {
-        var result = new OperationResult<OrderItemLink>();
+        var result = new GenericOperationResult<OrderItemLink>();
 
         try
         {

@@ -20,8 +20,7 @@ public static class ApiRoutes
 
     public static class Item
     {
-        public const string IdRoute = "{id}";
-
+        public const string IdRoute = "{itemId}";
         public const string Items = "Items";
     }
 

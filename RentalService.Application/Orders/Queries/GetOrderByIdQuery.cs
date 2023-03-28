@@ -4,7 +4,7 @@ using RentalService.Domain.Aggregates.OrderAggregates;
 
 namespace RentalService.Application.Orders.Queries;
 
-public class GetOrderByIdQuery : IRequest<OperationResult<Order>>
+public class GetOrderByIdQuery : IRequest<GenericOperationResult<Order>>
 {
     public Guid Id { get; set; }
 }

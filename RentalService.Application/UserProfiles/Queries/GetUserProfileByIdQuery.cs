@@ -5,7 +5,7 @@ using RentalService.Domain.Aggregates.UserProfileAggregates;
 
 namespace RentalService.Application.UserProfiles.Queries;
 
-public class GetUserProfileByIdQuery : IRequest<OperationResult<UserProfile>>
+public class GetUserProfileByIdQuery : IRequest<GenericOperationResult<UserProfile>>
 {
     public Guid Id { get; set; }
 }

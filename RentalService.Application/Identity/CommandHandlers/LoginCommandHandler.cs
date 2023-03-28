@@ -14,7 +14,7 @@ using RentalService.Domain.Aggregates.UserProfileAggregates;
 
 namespace RentalService.Application.Identity.CommandHandlers;
 
-public class LoginCommandHandler : IRequestHandler<LoginCommand, OperationResult<string>>
+public class LoginCommandHandler : IRequestHandler<LoginCommand, GenericOperationResult<string>>
 {
     private readonly DataContext _ctx;
     private readonly UserManager<IdentityUser> _userManager;
@@ -28,9 +28,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, OperationResult
         _identityService = identityService;
     }
 
-    public async Task<OperationResult<string>> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<string>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var result = new OperationResult<string>();
+        var result = new GenericOperationResult<string>();
 
         try
         {
@@ -52,7 +52,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, OperationResult
     }
 
     private async Task<bool> ValidateIdentityUserAsync(IdentityUser identityUser,
-        OperationResult<string> result, LoginCommand request)
+        GenericOperationResult<string> result, LoginCommand request)
     {
         if (identityUser is null)
         {

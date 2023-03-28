@@ -4,7 +4,7 @@ using RentalService.Domain.Aggregates.ItemAggregates;
 
 namespace RentalService.Application.Items.Commands;
 
-public class DeleteItemCommand : IRequest<OperationResult<Item>>
+public class DeleteItemCommand : IRequest<OperationResult>
 {
     public Guid Id { get; set; }
 }

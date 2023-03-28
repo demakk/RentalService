@@ -13,7 +13,7 @@ using RentalService.Domain.Exceptions;
 
 namespace RentalService.Application.Identity.CommandHandlers;
 
-public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, OperationResult<string>>
+public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, GenericOperationResult<string>>
 {
     private readonly DataContext _ctx;
     private readonly UserManager<IdentityUser> _userManager;
@@ -27,9 +27,9 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Operati
         _identityService = identityService;
     }
 
-    public async Task<OperationResult<string>> Handle(RegisterIdentity request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<string>> Handle(RegisterIdentity request, CancellationToken cancellationToken)
     {
-        var result = new OperationResult<string>();
+        var result = new GenericOperationResult<string>();
 
         try
         {
@@ -67,7 +67,7 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Operati
     }
 
 
-    private async Task<bool> ValidateProfileExistsAsync(RegisterIdentity request, OperationResult<string> result)
+    private async Task<bool> ValidateProfileExistsAsync(RegisterIdentity request, GenericOperationResult<string> result)
     {
         
         var existingIdentity = await _userManager.FindByEmailAsync(request.Username);
@@ -79,7 +79,7 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Operati
     }
 
     private async Task<bool> IdentityCreationSucceededAsync(IDbContextTransaction transaction,
-        OperationResult<string> result, IdentityUser identityUser, RegisterIdentity request, CancellationToken cancellationToken)
+        GenericOperationResult<string> result, IdentityUser identityUser, RegisterIdentity request, CancellationToken cancellationToken)
     {
         var creationResult =  await _userManager.CreateAsync(identityUser, request.Password);
 

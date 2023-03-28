@@ -7,10 +7,8 @@ using RentalService.Api.Contracts.OrderContracts.Requests;
 using RentalService.Api.Contracts.OrderContracts.Responses;
 using RentalService.Api.Extensions;
 using RentalService.Api.Filters;
-using RentalService.Application.Orders.CommandHandlers;
 using RentalService.Application.Orders.Commands;
 using RentalService.Application.Orders.Queries;
-using RentalService.Application.UserProfiles.Queries;
 
 namespace RentalService.Api.Controllers;
 
@@ -19,8 +17,13 @@ namespace RentalService.Api.Controllers;
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class OrderController : BaseController
 {
-    public OrderController(IMapper mapper, IMediator mediator) : base(mapper, mediator)
+    private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
+    
+    public OrderController(IMapper mapper, IMediator mediator)
     {
+        _mapper = mapper;
+        _mediator = mediator;
     }
     
     [HttpPost]

@@ -4,7 +4,7 @@ using RentalService.Domain.Aggregates.ItemAggregates;
 
 namespace RentalService.Application.Items.Commands;
 
-public class CreateItemCommand : IRequest<OperationResult<Item>>
+public class CreateItemCommand : IRequest<GenericOperationResult<Item>>
 {
     public Guid ItemCategoryId { get;  set; }
     public Guid ManufacturerId { get;  set; }

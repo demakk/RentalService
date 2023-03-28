@@ -9,17 +9,17 @@ using RentalService.Dal;
 
 namespace RentalService.Application.Identity.CommandHandlers;
 
-public class DeleteIdentityHandler : IRequestHandler<DeleteIdentityCommand, OperationResult<bool>>
+public class DeleteIdentityHandler : IRequestHandler<DeleteIdentityCommand, GenericOperationResult<bool>>
 {
     private readonly DataContext _ctx;
-    private OperationResult<bool> _result = new();
+    private GenericOperationResult<bool> _result = new();
 
     public DeleteIdentityHandler(DataContext ctx)
     {
         _ctx = ctx;
     }
 
-    public async Task<OperationResult<bool>> Handle(DeleteIdentityCommand request, CancellationToken cancellationToken)
+    public async Task<GenericOperationResult<bool>> Handle(DeleteIdentityCommand request, CancellationToken cancellationToken)
     {
         try
         {

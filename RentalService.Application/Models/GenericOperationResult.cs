@@ -2,8 +2,9 @@
 
 namespace RentalService.Application.Models;
 
-public class OperationResult
+public class GenericOperationResult<T>
 {
+    public T? Payload { get; set; }
     public bool IsError { get; private set; }
     public List<Error> Errors { get; set; } = new();
 

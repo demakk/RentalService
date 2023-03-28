@@ -4,7 +4,7 @@ using RentalService.Domain.Aggregates.ShoppingCartAggregates;
 
 namespace RentalService.Application.ShoppingCart.Commands;
 
-public class UpdateCartRecordDatesCommand : IRequest<OperationResult<Cart>>
+public class UpdateCartRecordDatesCommand : IRequest<GenericOperationResult<Cart>>
 {
     public Guid UserProfileId { get; set; }
     public Guid CartId { get; set; }

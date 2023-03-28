@@ -4,7 +4,7 @@ using RentalService.Domain.Aggregates.UserProfileAggregates;
 
 namespace RentalService.Application.UserProfiles.Commands;
 
-public class UpdateUserProfileCommand : IRequest<OperationResult<UserProfile>>
+public class UpdateUserProfileCommand : IRequest<GenericOperationResult<UserProfile>>
 {
     public Guid Id { get; set; }
     public string FirstName { get;  set; }
