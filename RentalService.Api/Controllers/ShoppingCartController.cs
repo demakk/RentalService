@@ -13,7 +13,7 @@ namespace RentalService.Api.Controllers;
 
 [ApiController]
 [Route(ApiRoutes.BaseRoute)]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize]
 public class ShoppingCartController : BaseController
 {
     private readonly IMapper _mapper;

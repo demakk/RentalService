@@ -71,7 +71,7 @@ public class OrderController : BaseController
     //TO DO: DeleteOrder
 
 
-    [HttpPost]
+    /*[HttpPost]
     [ValidateModel]
     [Route(ApiRoutes.Order.OrderItemRoute)]
     [ValidateGuid("orderId")]
@@ -90,7 +90,7 @@ public class OrderController : BaseController
        var mapped = _mapper.Map<OrderItemLinkResponse>(response.Payload);
        
        return response.IsError ? HandleErrorResponse(response.Errors) : Ok(mapped);
-    }
+    }*/
 
     [HttpGet]
     [Route(ApiRoutes.Order.OrderItemsByIdRoute)]
@@ -106,6 +106,27 @@ public class OrderController : BaseController
         return response.IsError ? HandleErrorResponse(response.Errors) : Ok(mapped);
         
     }
+
+
+    [HttpPatch]
+    [Route(ApiRoutes.Order.IdRoute)]
+    [ValidateGuid("orderId")]
+    [Authorize(Roles = "Manager")]
+    public async Task<IActionResult> ConfirmOrder(string orderId, [FromBody] OrderStatusUpdate status)
+    {
+        var userProfileId = HttpContext.GetUserProfileIdClaimValue();
+        var command = new UpdateOrderStatus
+        {
+            OrderId = Guid.Parse(orderId), UserProfileId = userProfileId, Status = status.Status
+        };
+
+        var response = await _mediator.Send(command);
+
+        if (response.IsError) return HandleErrorResponse(response.Errors);
+
+        return Ok();
+    }
+    
 
     //Create endpoints for order and orderItemLink creation
 }

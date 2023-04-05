@@ -1,12 +1,7 @@
-﻿using System.Data.SqlTypes;
-using System.Runtime.CompilerServices;
-using Dapper;
+﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using RentalService.Dal;
 
 namespace RentalService.Application.Services;
 

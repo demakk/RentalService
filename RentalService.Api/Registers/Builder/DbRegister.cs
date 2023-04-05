@@ -12,14 +12,19 @@ public class DbRegister : IWebApplicationBuilderRegister
         builder.Services.AddDbContext<DataContext>(options => { options.UseSqlServer(cs);});
 
         builder.Services.AddScoped<DapperContext>();
+        builder.Services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>,
+            UserClaimsPrincipalFactory<IdentityUser, IdentityRole>>();
         
-        builder.Services.AddIdentityCore<IdentityUser>(options =>
+        builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
             })
-            .AddEntityFrameworkStores<DataContext>();
+            .AddEntityFrameworkStores<DataContext>()
+            .AddDefaultTokenProviders();
+        
+
     }
 }

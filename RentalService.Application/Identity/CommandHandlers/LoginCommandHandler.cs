@@ -41,8 +41,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, GenericOperatio
 
             var profile = await _ctx.UserProfiles
                 .FirstOrDefaultAsync(p => p.IdentityId == identityUser.Id, cancellationToken: cancellationToken);
-            
-            result.Payload = GetJwtString(identityUser, profile);
+            var role = (await _userManager.GetRolesAsync(identityUser)).First();
+            if (role is null) role = "user";
+            result.Payload = GetJwtString(identityUser, profile, role);
         }
         catch (Exception e)
         {
@@ -70,17 +71,20 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, GenericOperatio
 
     }
 
-    private string GetJwtString(IdentityUser identityUser, UserProfile profile)
+    private string GetJwtString(IdentityUser identityUser, UserProfile profile, string role)
     {
+        
         var claimsIdentity = new ClaimsIdentity(new Claim[]
         {
             new(JwtRegisteredClaimNames.Sub, identityUser.Email),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Email, identityUser.Email),
             new("IdentityId", identityUser.Id),
-            new("UserProfileId", profile.Id.ToString())
+            new("UserProfileId", profile.Id.ToString()),
+            new(ClaimTypes.Role, role)
         });
 
+        
         var securityToken = _identityService.CreateSecurityToken(claimsIdentity);
             
         return _identityService.WriteToken(securityToken);

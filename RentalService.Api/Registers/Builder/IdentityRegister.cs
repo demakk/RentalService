@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using RentalService.Application.Options;
 
@@ -36,6 +37,9 @@ public class IdentityRegister : IWebApplicationBuilderRegister
             };
             jwt.Audience = jwtSettings.Audience[0];
             jwt.ClaimsIssuer = jwtSettings.Issuer;
-        });
+            
+        }); 
+        
+
     }
 }
