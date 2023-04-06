@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "KNF+4JOtcsH+c2WWZw/XYqUbdTRRjhcPo7wj93RoYKoc9/HtuCE9g2YA9kLM9Y7Bbt/1ETsrQ0462rMGqg+QOg==",
+  "success": true,
+  "projectFilePath": "D:\\dotnet\\dotnet projects\\RentalServiceApplication\\RentalService\\RentalService.Domain\\RentalService.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Uni\\.nuget\\packages\\fluentvalidation\\11.4.0\\fluentvalidation.11.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}
