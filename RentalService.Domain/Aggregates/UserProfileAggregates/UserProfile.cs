@@ -17,7 +17,7 @@ public class UserProfile
         //TO DO: add validation, error handling strategies, error notification
         return new UserProfile
         {
-            Id = Guid.NewGuid(),
+            Id = userBasicInfo.UserProfileId,
             UserBasicInfo = userBasicInfo,
             IdentityId = identityId,
             DateCreated = DateTime.UtcNow,

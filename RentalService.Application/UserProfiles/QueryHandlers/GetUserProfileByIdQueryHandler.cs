@@ -25,7 +25,6 @@ public class GetUserProfileByIdQueryHandler : IRequestHandler<GetUserProfileById
         {
             var profile = await _ctx.UserProfiles
                 .Include(up => up.UserBasicInfo)
-                .ThenInclude(bi => bi.UserContacts)
                 .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
         
             if (profile is null)

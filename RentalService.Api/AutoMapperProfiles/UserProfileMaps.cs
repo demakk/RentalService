@@ -12,12 +12,8 @@ public class UserProfileMaps : Profile
 {
     public UserProfileMaps()
     {
-        CreateMap<UserContactCreate, UserContact>();
         CreateMap<UserProfileCreate, UpdateUserProfileCommand>();
         CreateMap<UserBasicInfo, BasicInfoResponse>();
-        
-        CreateMap<UserContact, UserContactResponse>();
-
         CreateMap<UserProfile, UserProfileResponse>()
             .ForMember(
                 dest => dest.BasicInfoResponse,

@@ -26,10 +26,8 @@ public class UserRegistration
     
     [Required]
     public DateTime DateOfBirth { get;  set; }
-    
-    public int CityId { get;  set; }
-    public string Address { get;  set; }
-    
-    
-    public UserContactCreate[] Contacts { get; set; }
+
+
+    public string? PassportId { get; set; }
+    public string Phone { get; set; }
 }

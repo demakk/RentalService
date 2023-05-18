@@ -15,8 +15,6 @@ public class DataContext : IdentityDbContext
         
     }
     public DbSet<Country> Countries { get; set; }
-    public DbSet<City> Cities { get; set; }
-    public DbSet<UserContact> UserContacts { get; set; }
     public DbSet<UserBasicInfo> UserBasicInfos { get; set; }
     public DbSet<UserProfile> UserProfiles { get; set; }
 

@@ -25,7 +25,6 @@ public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfile
         {
             var profile = await _ctx.UserProfiles
                 .Include(up => up.UserBasicInfo)
-                .ThenInclude(bi => bi.UserContacts)
                 .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken: cancellationToken);
 
             if (profile is null)
@@ -35,8 +34,8 @@ public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfile
                 return result;
             }
 
-            var basicInfo = UserBasicInfo.CreateUserBasicInfo(request.FirstName, request.LastName, request.DateOfBirth,
-                request.CityId, request.Address, request.Contacts);
+            var basicInfo = UserBasicInfo.CreateUserBasicInfo(profile.Id, request.FirstName, request.LastName, request.DateOfBirth,
+                request.PassportId, request.Phone, request.Email);
 
             profile.UserBasicInfo.UpdateBasicInfo(basicInfo);
 

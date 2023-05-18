@@ -10,7 +10,7 @@ public class UpdateUserProfileCommand : IRequest<GenericOperationResult<UserProf
     public string FirstName { get;  set; }
     public string LastName { get;  set; }
     public DateTime DateOfBirth { get;  set; }
-    public int CityId { get;  set; }
-    public string Address { get;  set; }
-    public List<UserContact>? Contacts { get; set; }
+    public string? PassportId { get; set; }
+    public string Phone { get; set; }
+    public string Email { get; set; }
 }

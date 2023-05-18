@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore.Metadata;
 using RentalService.Application.Models;
 using RentalService.Domain.Aggregates.UserProfileAggregates;
 
@@ -12,7 +13,7 @@ public class RegisterIdentity : IRequest<GenericOperationResult<string>>
     public string FirstName { get;  set; }
     public string LastName { get;  set; }
     public DateTime DateOfBirth { get;  set; }
-    public int CityId { get;  set; }
-    public string Address { get;  set; }
-    public UserContact[] Contacts { get; set; }
+
+    public string? PassportId { get; set; }
+    public string Phone { get; set; }
 }

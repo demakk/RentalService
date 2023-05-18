@@ -26,7 +26,6 @@ public class GetAllUserProfilesQueryHandler : IRequestHandler<GetAllUserProfiles
         {
             var profiles = await _ctx.UserProfiles
                 .Include(up => up.UserBasicInfo)
-                .ThenInclude(bi => bi.UserContacts)
                 .ToListAsync(cancellationToken);
             result.Payload = profiles;
         }
