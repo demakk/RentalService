@@ -12,7 +12,7 @@ public class MvcWebAppRegister : IWebApplicationRegister
         }
 
         app.UseHttpsRedirection();
-
+        app.UseCors();
         app.UseAuthentication();
         app.UseAuthorization();
 

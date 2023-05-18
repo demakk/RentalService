@@ -15,7 +15,6 @@ public class ValidateGuidAttribute :ActionFilterAttribute
     
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-
         var hasError = false;
         var apiError = new ErrorResponse();
         _keys.ForEach(k =>
