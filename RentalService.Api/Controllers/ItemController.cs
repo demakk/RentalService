@@ -25,18 +25,11 @@ public class ItemController : BaseController
     [HttpPost]
     public async Task<IActionResult> CreateItem([FromBody] ItemCreate item)
     {
-        var command = new CreateItemCommand
-        {
-            ItemCategoryId = Guid.Parse(item.ItemCategoryId), ManufacturerId = Guid.Parse(item.ManufacturerId),
-            Description = item.Description, InitialPrice = item.InitialPrice
-        };
-
+        var command = _mapper.Map<CreateItemCommand>(item);
         var response = await _mediator.Send(command);
-
         var mapped = _mapper.Map<ItemResponse>(response.Payload);
         return response.IsError ? HandleErrorResponse(response.Errors) 
             : CreatedAtAction("CreateItem", new {id = response.Payload.Id}, mapped);
-
     }
 
     [HttpPut]
@@ -45,15 +38,9 @@ public class ItemController : BaseController
     [ValidateGuid("itemId")]
     public async Task<IActionResult> UpdateItemById([FromBody] ItemUpdate item, string itemId)
     {
-        //Probably should be rewritten with mapper
-        var command = new UpdateItemCommand
-        {
-            Id = Guid.Parse(itemId),
-            ManufacturerId = Guid.Parse(item.ManufacturerId),
-            ItemCategoryId = Guid.Parse(item.ItemCategoryId),
-            CurrentPrice = item.CurrentPrice,
-            Description = item.Description
-        };
+        var command = _mapper.Map<UpdateItemCommand>(item);
+
+        command.Id = Guid.Parse(itemId);
 
         var response = await _mediator.Send(command);
 
@@ -62,6 +49,8 @@ public class ItemController : BaseController
         return Ok();
     }
 
+    
+    //Is likely to be deleted later
     [HttpDelete]
     [Route(ApiRoutes.Item.IdRoute)]
     [ValidateGuid("itemId")]

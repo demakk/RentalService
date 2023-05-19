@@ -9,32 +9,45 @@ public class Item
     public Guid Id { get;  private set; }
     public Guid ItemCategoryId { get; private set; }
     public Guid ManufacturerId { get; private set; }
-    public decimal InitialPrice { get; private set; }
-    public decimal CurrentPrice { get; private set; }
-    public string Description { get; private set; }
-    public string ItemStatus { get; private set; }
-    
-    //nav properties
-    public ItemCategory ItemCategory { get; private set; }
-    public Manufacturer Manufacturer { get; private set; }
-    public Cart Cart { get; set; }
-    
+    public string Title { get; private set; }
+    public int Amount { get; private set; }
+    public decimal PricePerDay { get; private set; }
+    public decimal FullPrice { get; private set; }
+    public string? Description { get; private set; }
     
     //factory methods
-    public static Item CreateItem(Guid itemCategoryId, Guid manufacturerId, decimal initialPrice, string description)
+    public static Item CreateItem(string itemCategoryId, string manufacturerId, string title,
+        int amount, decimal pricePerDay, decimal fullPrice, string? description)
     {
         //TO DO: Validate initial price 
         var validator = new ItemValidator();
         
+        
+        var itemCategoryIsValid = Guid.TryParse(itemCategoryId, out var itemCategoryGuid);
+
+        if (!itemCategoryIsValid)
+        {
+            var ex = new ItemNotValidException("The item is not valid");
+            ex.ValidationErrors.Add("Item category id is not in GUID format!");
+        }
+        var manufacturerIsValid = Guid.TryParse(manufacturerId, out var manufacturerGuid);
+        if (!manufacturerIsValid)
+        {
+            var ex = new ItemNotValidException("The item is not valid");
+            ex.ValidationErrors.Add("Manufacturer id is not in GUID format!");
+        }
+        
+        
         var itemToValidate = new Item
         {
             Id = Guid.NewGuid(),
-            ItemCategoryId = itemCategoryId,
-            ManufacturerId = manufacturerId,
-            InitialPrice = initialPrice,
-            CurrentPrice = initialPrice,
+            ItemCategoryId = itemCategoryGuid,
+            ManufacturerId = manufacturerGuid,
+            Title = title,
+            Amount = amount,
+            PricePerDay = pricePerDay,
+            FullPrice = fullPrice,
             Description = description,
-            ItemStatus = "Available"
         };
 
         var validationResult = validator.Validate(itemToValidate);
@@ -49,8 +62,8 @@ public class Item
         throw exception;
     }
 
-    public static Item ValidateToUpdateItem(Guid id, Guid itemCategoryId, Guid manufacturerId,
-        decimal currentPrice, string description)
+    public static Item ValidateToUpdateItem(Guid id, Guid itemCategoryId, Guid manufacturerId, string title,
+        int amount, decimal pricePerDay, decimal fullPrice, string? description)
     {
         var validator = new ItemValidator();
         
@@ -59,7 +72,10 @@ public class Item
             Id = id,
             ItemCategoryId = itemCategoryId,
             ManufacturerId = manufacturerId,
-            CurrentPrice = currentPrice,
+            Title = title,
+            Amount = amount,
+            PricePerDay = pricePerDay,
+            FullPrice = fullPrice,
             Description = description
         };
 

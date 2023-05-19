@@ -25,14 +25,14 @@ public class CreateItemCommandHandler : IRequestHandler<CreateItemCommand, Gener
             var connection = _ctx.Connect();
             connection.Open();
             
-            var item = Item.CreateItem(request.ItemCategoryId, request.ManufacturerId,
-                request.InitialPrice, request.Description);
+            var item = Item.CreateItem(request.ItemCategoryId, request.ManufacturerId, request.Title,
+                request.Amount, request.PricePerDay, request.FullPrice, request.Description);
 
             var entityToInsert = new
             {
                 Id = item.Id, ItemCategoryId = item.ItemCategoryId, ManufacturerId = item.ManufacturerId,
-                InitialPrice = item.InitialPrice, CurrentPrice = item.CurrentPrice,
-                Description = item.Description, ItemStatus = item.ItemStatus
+                Title = item.Title, Amount = item.Amount, PricePerDay = item.PricePerDay, FullPrice = item.FullPrice,
+                Description = item.Description
             };
 
             var res = await connection.ExecuteAsync(Queries.InsertItem, entityToInsert);
@@ -53,7 +53,7 @@ public class CreateItemCommandHandler : IRequestHandler<CreateItemCommand, Gener
     private class Queries
     {
         public const string InsertItem 
-            = "INSERT INTO Items (Id, ItemCategoryId, ManufacturerId, InitialPrice, CurrentPrice, Description, ItemStatus)" +
-              " VALUES (@Id, @ItemCategoryId, @ManufacturerId, @InitialPrice, @CurrentPrice, @Description, @ItemStatus)";
+            = "INSERT INTO Items (Id, ItemCategoryId, ManufacturerId, Title, Amount, PricePerDay, FullPrice, Description)" +
+              " VALUES (@Id, @ItemCategoryId, @ManufacturerId, @Title, @Amount, @PricePerDay, @FullPrice, @Description)";
     }
 }

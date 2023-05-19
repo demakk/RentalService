@@ -28,12 +28,13 @@ public class UpdateItemCommandHandler : IRequestHandler<UpdateItemCommand, Gener
             connection.Open();
 
             var item = Item.ValidateToUpdateItem(request.Id, request.ItemCategoryId, request.ManufacturerId,
-                request.CurrentPrice, request.Description);
+                request.Title, request.Amount, request.PricePerDay, request.FullPrice, request.Description);
 
             var entityToUpdate = new
             {
                 ItemCategoryId = request.ItemCategoryId, ManufacturerId = request.ManufacturerId,
-                CurrentPrice = request.CurrentPrice, Description = request.Description, ItemId = request.Id
+                Title = request.Title, Amount = request.Amount, PricePerDay = request.PricePerDay,
+                FullPrice = request.FullPrice, Description = request.Description, ItemId = request.Id
             };
             
             var itemResponse = await connection.ExecuteAsync(Queries.UpdateItemById, entityToUpdate);
@@ -63,7 +64,8 @@ public class UpdateItemCommandHandler : IRequestHandler<UpdateItemCommand, Gener
     {
         public const string UpdateItemById 
             = "UPDATE Items SET ItemCategoryId = @ItemCategoryId, ManufacturerId = @ManufacturerId," +
-              "CurrentPrice = @CurrentPrice, Description = @Description" +
+              " Title = @Title, Amount = @Amount, PricePerDay = @PricePerDay, FullPrice = @FullPrice," +
+              " Description = @Description" +
               " WHERE Id = @ItemId";
     }
 }

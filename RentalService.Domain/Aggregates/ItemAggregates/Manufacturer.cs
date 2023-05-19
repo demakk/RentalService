@@ -10,8 +10,6 @@ public class Manufacturer
     public string Name { get; private set; }
     public string Description { get; private set; }
     
-    private readonly List<Item> _items = new List<Item>();
-    public IEnumerable<Item> Items => _items;
     
     //factory methods
     public Manufacturer CreateManufacturer(int countryId, string name, string description)

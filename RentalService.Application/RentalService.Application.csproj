@@ -20,10 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Geography\Cities\CommandHandlers" />
-      <Folder Include="Geography\Cities\Commands" />
-      <Folder Include="Geography\Cities\Queries" />
-      <Folder Include="Geography\Cities\QueryHandlers" />
       <Folder Include="Geography\Countries\CommandHandlers" />
       <Folder Include="Geography\Countries\Queries" />
       <Folder Include="Geography\Countries\QueryHandlers" />
