@@ -51,6 +51,9 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Generic
             
             var profile = await CreateUserProfile(request, identityUser, transaction, cancellationToken);
 
+            await CreateCustomerRole(identityUser, transaction, profile.Id, cancellationToken);
+
+            await transaction.CommitAsync(cancellationToken);
             result.Payload = GetJwtString(identityUser, profile);
 
             return result;
@@ -108,9 +111,7 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Generic
             _ctx.UserProfiles.Add(profile);
             
             await _ctx.SaveChangesAsync(cancellationToken);
-            
-            await transaction.CommitAsync(cancellationToken);
-            
+
             return profile;
         }
         catch
@@ -118,9 +119,25 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Generic
             await transaction.RollbackAsync(cancellationToken);
             throw;
         }
-
     }
 
+    private async Task CreateCustomerRole(IdentityUser identityUser, IDbContextTransaction transaction,
+        Guid userProfileId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _userManager.AddToRoleAsync(identityUser, "Customer");
+            var customer = Customer.CreateAndValidateCustomer(userProfileId, 0);
+            _ctx.Customers.Add(customer);
+            await _ctx.SaveChangesAsync(cancellationToken);
+        }
+        catch
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
+        }
+    }
+    
     private string GetJwtString(IdentityUser identityUser, UserProfile profile)
     {
         var claimsIdentity = new ClaimsIdentity(new Claim[]

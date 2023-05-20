@@ -29,7 +29,8 @@ public static class ApiRoutes
     public static class Identity
     {
         public const string Login = "login";
-        public const string Registration = "registation";
+        public const string CustomerRegistration = "customerRegistation";
+        public const string ManagerRegistration = "managerRegistation";
         public const string IdentityById = "{identityUserId}";
     }
 

@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +7,7 @@ using RentalService.Api.Contracts.IdentityContracts;
 using RentalService.Api.Extensions;
 using RentalService.Api.Filters;
 using RentalService.Application.Identity.Commands;
+
 
 namespace RentalService.Api.Controllers;
 
@@ -26,7 +26,7 @@ public class IdentityController : BaseController
     }
     
     [HttpPost]
-    [Route(ApiRoutes.Identity.Registration)]
+    [Route(ApiRoutes.Identity.CustomerRegistration)]
     [ValidateModel]
     public async Task<IActionResult> Register([FromBody] UserRegistration registration)
     {
@@ -39,7 +39,15 @@ public class IdentityController : BaseController
         return response.IsError ? HandleErrorResponse(response.Errors) : Ok(token);
     }
 
-
+    [HttpPost]
+    [Route(ApiRoutes.Identity.ManagerRegistration)]
+    [ValidateModel]
+    //[Authorize(Roles = "Admin")]
+    public async Task<IActionResult> RegisterManager([FromBody] ManagerRegistration registration)
+    {
+        return Ok();
+    }
+    
     [HttpPost]
     [Route(ApiRoutes.Identity.Login)]
     [ValidateModel]

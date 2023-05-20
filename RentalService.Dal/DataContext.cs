@@ -18,6 +18,8 @@ public class DataContext : IdentityDbContext
     public DbSet<UserBasicInfo> UserBasicInfos { get; set; }
     public DbSet<UserProfile> UserProfiles { get; set; }
 
+    public DbSet<Customer> Customers { get; set; }
+
     public DbSet<Cart> ShoppingCarts { get; set; }
 
     public DbSet<ItemCategory> ItemCategories { get; set; }
