@@ -6,5 +6,7 @@ namespace RentalService.Application.Orders.Commands;
 
 public class CreateOrderCommand : IRequest<GenericOperationResult<Order>>
 {
-    public Guid UserProfileId { get; set; }
+    public Guid CustomerUserProfileId { get; set; }
+    public string DateFrom { get; set; }
+    public string DateTo { get; set; }
 }

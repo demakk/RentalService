@@ -40,17 +40,17 @@ public class UpdateCartRecordDatesHandler : IRequestHandler<UpdateCartRecordDate
 
             var cartRecord = res.First();
 
-            cartRecord.AddStartAndEndDates(request.StartDate, request.EndDate);
+            /*cartRecord.AddStartAndEndDates(request.StartDate, request.EndDate);
 
             var entityToUpdate = new
             {
                 StartDate = cartRecord.StartDate,
                 EndDate = cartRecord.EndDate,
                 CartId = cartRecord.Id
-            };
+            };*/
                 
-            var resUpdate = await connection.ExecuteAsync(Queries.UpdateCartDates, entityToUpdate);
-            _result.Payload = cartRecord;
+            /*var resUpdate = await connection.ExecuteAsync(Queries.UpdateCartDates, entityToUpdate);
+            _result.Payload = cartRecord;*/
         }
         catch (Exception e)
         {

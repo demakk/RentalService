@@ -27,10 +27,13 @@ public class OrderController : BaseController
     }
     
     [HttpPost]
-    public async Task<IActionResult> CreateOrder()
+    public async Task<IActionResult> CreateOrder([FromBody] OrderCreate order)
     {
         var userProfileId = HttpContext.GetUserProfileIdClaimValue();
-        var command = new CreateOrderCommand { UserProfileId = userProfileId};
+        var command = new CreateOrderCommand
+        {
+            CustomerUserProfileId = userProfileId, DateFrom = order.DateFrom, DateTo = order.DateTo
+        };
 
         var response = await _mediator.Send(command);
 

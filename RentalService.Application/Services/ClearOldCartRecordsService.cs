@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 namespace RentalService.Application.Services;
 
 
-public class ClearOldCartRecordsService : IHostedService, IDisposable
+/*public class ClearOldCartRecordsService : IHostedService, IDisposable
 {
     private Timer _timer;
     private readonly IConfiguration _configuration;
@@ -44,4 +44,4 @@ public class ClearOldCartRecordsService : IHostedService, IDisposable
     {
         _timer.Dispose();
     }
-}
+}*/

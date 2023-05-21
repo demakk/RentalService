@@ -7,56 +7,64 @@ namespace RentalService.Domain.Aggregates.OrderAggregates;
 public class Order
 {
     public Guid Id { get; private set; }
-    public Guid UserProfileId { get; private set; }
-
-    public Guid? ManagerId { get; private set; }
-    public DateTime? ActualRentDate { get; private set; }
-    public decimal? TotalPrice { get; private set; }
-
-    public string State { get; private set; }
-
-
-    //nav properties
-    public UserProfile UserProfile { get; private set; }
+    public Guid CustomerUserProfileId { get; private set; }
+    public Guid? ManagerUserProfileId { get; private set; }
+    public Guid StatusId { get; private set; }
+    public DateTime DateFrom { get; private set; }
+    public DateTime DateTo { get; private set; }
+    public DateTime? ActualDateFrom { get; private set; }
+    public DateTime? ActualDateTo { get; private set; }
+    public decimal TotalSum { get; private set; }
+    public int Discount { get; private set; }
+    public decimal Deposit { get; private set; }
 
     //factory methods
-    public static Order CreateOrder(Guid userProfileId)
+    public static Order CreateAndValidateOrder(Guid customerUserProfileId, Guid? managerUserProfileId,
+        Guid statusId, DateTime dateFrom, DateTime dateTo, DateTime? actualDateFrom, DateTime? actualDateTo,
+        decimal totalSum, int discount, decimal deposit)
     {
-        return new Order
+        var validator = new OrderValidator();
+        var objectToValidate = new Order
         {
             Id = Guid.NewGuid(),
-            UserProfileId = userProfileId
+            CustomerUserProfileId = customerUserProfileId,
+            ManagerUserProfileId = managerUserProfileId,
+            StatusId = statusId, DateFrom = dateFrom, DateTo = dateTo,
+            ActualDateFrom = actualDateFrom, ActualDateTo = actualDateTo,
+            TotalSum = totalSum, Discount = discount, Deposit = deposit
         };
-    }
 
-    public void UpdateOrderTotalPrice(decimal price)
-    {
-        TotalPrice = price;
-    }
+        var validationResult = validator.Validate(objectToValidate);
 
-    public static void ValidateOrderStatus(string status)
-    {
-        var validator = new UpdateStatusValidator();
-        var validationResult = validator.Validate(status);
+        if (validationResult.IsValid) return objectToValidate;
 
-        if (validationResult.IsValid) return;
-
-        var exception = new OrderNotValidException();
+        var exception = new OrderNotValidException("Order is not in valid state");
         
-        validationResult.Errors.ForEach(r =>
+        validationResult.Errors.ForEach(e =>
         {
-            exception.ValidationErrors.Add(r.ErrorMessage);
+            exception.ValidationErrors.Add(e.ErrorMessage);
         });
 
         throw exception;
-
     }
 
-
-
-    public void SetActualReturnDate()
+    public static bool ValidateOrderDates(string dateFrom, string dateTo)
     {
-        ActualRentDate = DateTime.Now;
+        var isDate = DateTime.TryParse(dateFrom, out var dateTimeFrom);
+        if (!isDate)
+        {
+            var exception = new OrderNotValidException("Order is not in valid state");
+            exception.ValidationErrors.Add("DateFrom is not a date");
+        }
+
+        isDate = DateTime.TryParse(dateTo, out var dateTimeTo);
+        if (!isDate)
+        {
+            var exception = new OrderNotValidException("Order is not in valid state");
+            exception.ValidationErrors.Add("DateFrom is not a date");
+        }
+
+        return true;
     }
 
 }

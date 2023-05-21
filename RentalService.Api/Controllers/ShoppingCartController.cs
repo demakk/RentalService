@@ -31,9 +31,11 @@ public class ShoppingCartController : BaseController
 
         var command = new CreateCartRecordCommand
             {
-                UserProfileId = userProfileId,
-                ItemId = cartRecord.ItemId
+                CustomerId = userProfileId,
+                ItemId = cartRecord.ItemId,
+                Count = cartRecord.Count
             };
+        
         var response = await _mediator.Send(command);
             return Ok(response);
     }

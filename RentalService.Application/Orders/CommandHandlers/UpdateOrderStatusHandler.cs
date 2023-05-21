@@ -27,7 +27,7 @@ public class UpdateOrderStatusHandler : IRequestHandler<UpdateOrderStatus, Opera
             var connection = _ctx.Connect();
             connection.Open();
 
-            Order.ValidateOrderStatus(request.Status);
+            //Order.ValidateOrderStatus(request.Status);
             var updateResponse = await connection
                 .ExecuteAsync(Queries.UpdateOrderManagerIdAndState,
                     new { ManagerId = request.UserProfileId, Status = request.Status, OrderId = request.OrderId });
@@ -56,7 +56,7 @@ public class UpdateOrderStatusHandler : IRequestHandler<UpdateOrderStatus, Opera
     private class Queries
     {
         public const string UpdateOrderManagerIdAndState = "UPDATE Orders" +
-                                                           " SET ManagerId = @ManagerId, Status = @Status" +
+                                                           "" +
                                                            " WHERE Id = @OrderId";
     }
 }

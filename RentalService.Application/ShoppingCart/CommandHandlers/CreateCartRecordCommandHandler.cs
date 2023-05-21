@@ -9,6 +9,7 @@ using RentalService.Application.Models;
 using RentalService.Application.ShoppingCart.Commands;
 using RentalService.Dal;
 using RentalService.Domain.Aggregates.ShoppingCartAggregates;
+using RentalService.Domain.Aggregates.UserProfileAggregates;
 using RentalService.Domain.Exceptions;
 
 namespace RentalService.Application.ShoppingCart.CommandHandlers;
@@ -30,18 +31,18 @@ public class CreateCartRecordCommandHandler : IRequestHandler<CreateCartRecordCo
 
         try
         {
-            var cart = Cart.CreateShoppingCartRecord(request.UserProfileId, request.ItemId);
+            var cart = Cart.CreateShoppingCartRecord(request.CustomerId, request.ItemId, request.Count);
 
             var newItem = new
             {
-                Id = cart.Id,
-                UserProfileId = cart.UserProfileId,
+                CustomerId = cart.CustomerId,
                 ItemId = cart.ItemId,
+                Count = cart.Count,
                 ClearDate = cart.ClearDate
             };
 
-            string sql = "INSERT INTO ShoppingCarts (Id, UserProfileId, ItemId, ClearDate)" +
-                         "VALUES (@Id, @UserProfileId, @ItemId, @ClearDate)";
+            string sql = "INSERT INTO ShoppingCarts (CustomerId, ItemId, Count, ClearDate)" +
+                         "VALUES (@CustomerId, @ItemId, @Count, @ClearDate)";
 
             var connection = new SqlConnection(_configuration.GetConnectionString("DapperString"));
             await connection.OpenAsync(cancellationToken);

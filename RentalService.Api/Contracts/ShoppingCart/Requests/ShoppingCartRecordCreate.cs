@@ -6,4 +6,6 @@ public class ShoppingCartRecordCreate
 {
     [Required]
     public Guid ItemId { get; set; }
+
+    public int Count { get; set; }
 }

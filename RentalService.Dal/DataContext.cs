@@ -17,14 +17,7 @@ public class DataContext : IdentityDbContext
     public DbSet<Country> Countries { get; set; }
     public DbSet<UserBasicInfo> UserBasicInfos { get; set; }
     public DbSet<UserProfile> UserProfiles { get; set; }
-
     public DbSet<Customer> Customers { get; set; }
-
-    public DbSet<Cart> ShoppingCarts { get; set; }
-
-    public DbSet<ItemCategory> ItemCategories { get; set; }
-    public DbSet<Manufacturer> Manufacturers { get; set; }
-    public DbSet<Item> Items { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItemLink> OrderItemLinks { get; set; }
 
