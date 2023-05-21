@@ -50,28 +50,29 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gen
         return _result;
     }
 
-    // private static class Queries
-    //
-    // {
-    //     public const string GetUserCartRecords = "SELECT * FROM ShoppingCarts" +
-    //                                                      " WHERE UserProfileId = @UserProfileId";
-    //     
-    //     public const string InsertOrder = "INSERT INTO Orders (Id, UserProfileId)" +
-    //                                       " VALUES (@Id, @UserProfileId)";
-    //
-    //     public const string InsertOrderItem = "INSERT INTO OrderItemLinks (Id, ItemId, OrderId, StartDate, EndDate)" +
-    //                                           " VALUES (@Id, @ItemId, @OrderId, @StartDate, @EndDate)";
-    //
-    //     public const string CalculateTotalPrice = "SELECT SUM(CurrentPrice / 50 * DATEDIFF(day, sc.StartDate, sc.EndDate))" +
-    //                                               " FROM ShoppingCarts sc" +
-    //                                               " INNER JOIN Items i ON sc.ItemId = i.Id" +
-    //                                               " WHERE sc.UserProfileId = @UserProfileId";
-    //
-    //     public const string UpdateOrderWithTotalPrice = "UPDATE Orders SET TotalPrice = @TotalPrice" +
-    //                                                     " WHERE Id = @OrderId";
-    //
-    //     public const string SetItemUnavailable = "UPDATE i SET ItemStatus = 'unavailable'" +
-    //                                              " FROM Items i INNER JOIN ShoppingCarts sc ON sc.ItemId = i.Id" +
-    //                                              " WHERE sc.UserProfileid = @UserProfileId";
-    // }
+    private static class Queries
+
+    {
+        public const string GetOrderDetails = "";
+        /*public const string GetUserCartRecords = "SELECT * FROM ShoppingCarts" +
+                                                         " WHERE UserProfileId = @UserProfileId";
+        
+        public const string InsertOrder = "INSERT INTO Orders (Id, UserProfileId)" +
+                                          " VALUES (@Id, @UserProfileId)";
+    
+        public const string InsertOrderItem = "INSERT INTO OrderItemLinks (Id, ItemId, OrderId, StartDate, EndDate)" +
+                                              " VALUES (@Id, @ItemId, @OrderId, @StartDate, @EndDate)";
+    
+        public const string CalculateTotalPrice = "SELECT SUM(CurrentPrice / 50 * DATEDIFF(day, sc.StartDate, sc.EndDate))" +
+                                                  " FROM ShoppingCarts sc" +
+                                                  " INNER JOIN Items i ON sc.ItemId = i.Id" +
+                                                  " WHERE sc.UserProfileId = @UserProfileId";
+    
+        public const string UpdateOrderWithTotalPrice = "UPDATE Orders SET TotalPrice = @TotalPrice" +
+                                                        " WHERE Id = @OrderId";
+    
+        public const string SetItemUnavailable = "UPDATE i SET ItemStatus = 'unavailable'" +
+                                                 " FROM Items i INNER JOIN ShoppingCarts sc ON sc.ItemId = i.Id" +
+                                                 " WHERE sc.UserProfileid = @UserProfileId";*/
+    }
 }

@@ -14,13 +14,13 @@ public class DataContext : IdentityDbContext
     {
         
     }
-    public DbSet<Country> Countries { get; set; }
     public DbSet<UserBasicInfo> UserBasicInfos { get; set; }
     public DbSet<UserProfile> UserProfiles { get; set; }
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItemLink> OrderItemLinks { get; set; }
 
+    public DbSet<Manager> Managers { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

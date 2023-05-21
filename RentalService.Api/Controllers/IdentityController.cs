@@ -42,10 +42,18 @@ public class IdentityController : BaseController
     [HttpPost]
     [Route(ApiRoutes.Identity.ManagerRegistration)]
     [ValidateModel]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> RegisterManager([FromBody] ManagerRegistration registration)
     {
-        return Ok();
+        var command = new RegisterManagerCommand
+        {
+            UserProfileId = registration.UserProfileId, Salary = registration.Salary, BossId = registration.BossId,
+            HireDate = registration.HireDate, FireDate = registration.FireDate
+        };
+
+        var response = await _mediator.Send(command);
+        
+        return Ok(response);
     }
     
     [HttpPost]

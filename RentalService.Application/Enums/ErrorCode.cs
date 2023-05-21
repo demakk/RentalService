@@ -13,6 +13,7 @@ public enum ErrorCode
     IdentityCreationFailed = 202,
     PasswordNotValid = 203,
     UnauthorizedAccountRemoval = 204,
+    UserDoesNotExist = 205,
         
     UnknownError = 1001
     

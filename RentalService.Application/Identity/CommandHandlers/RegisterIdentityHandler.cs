@@ -44,7 +44,7 @@ public class RegisterIdentityHandler : IRequestHandler<RegisterIdentity, Generic
             };
             
             await using var transaction = await _ctx.Database.BeginTransactionAsync(cancellationToken);
-            
+                
             var identityCreationSucceeded = await IdentityCreationSucceededAsync(transaction, result, identityUser, request, cancellationToken);
             
             if (!identityCreationSucceeded) return result;
