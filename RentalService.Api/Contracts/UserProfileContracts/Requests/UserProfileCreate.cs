@@ -15,17 +15,8 @@ public class UserProfileCreate
     
     [Required]
     public DateTime DateOfBirth { get;  set; }
-    
-    [Required]
-    public int CityId { get;  set; }
-    
-    [Required]
-    public string Address { get;  set; }
 
-    // [Required]
-    // [EmailAddress]
-    // public string Email { get; set; }
-
-    [Required]
-    public List<UserContactCreate> Contacts { get; set; }
+    public string? PassportId { get; set; }
+    public string Phone { get; set; }
+    public string Email { get; set; }
 }

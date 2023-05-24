@@ -21,6 +21,7 @@ public class UserProfile
             IdentityId = identityId,
             DateCreated = DateTime.UtcNow,
             LastModified = DateTime.UtcNow
+            
         };
     }
 

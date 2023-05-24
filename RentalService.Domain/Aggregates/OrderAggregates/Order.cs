@@ -18,6 +18,12 @@ public class Order
     public int Discount { get; private set; }
     public decimal Deposit { get; private set; }
 
+    public List<OrderItemLink> OrderItemLinks { get; set; }
+
+    /*private readonly List<OrderItemLink> _orderItemLinks = new();
+
+    public IEnumerable<OrderItemLink> OrderItemLinks => _orderItemLinks;*/
+
     //factory methods
     public static Order CreateAndValidateOrder(Guid customerUserProfileId, Guid? managerUserProfileId,
         Guid statusId, DateTime dateFrom, DateTime dateTo, DateTime? actualDateFrom, DateTime? actualDateTo,

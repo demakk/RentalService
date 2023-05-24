@@ -11,6 +11,8 @@ public class ItemMaps : Profile
     public ItemMaps()
     {
         CreateMap<Item, ItemResponse>();
+        CreateMap<ItemCategory, ItemCategoryResponse>();
+        CreateMap<Manufacturer, ManufacturerResponse>();
         CreateMap<ItemCreate, CreateItemCommand>();
         CreateMap<ItemUpdate, UpdateItemCommand>();
     }

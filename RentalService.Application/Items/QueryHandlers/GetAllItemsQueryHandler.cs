@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using RentalService.Application.Items.Queries;
 using RentalService.Application.Models;
 using RentalService.Dal;
@@ -9,10 +10,10 @@ namespace RentalService.Application.Items.QueryHandlers;
 
 public class GetAllItemsQueryHandler : IRequestHandler<GetAllItemsQuery, GenericOperationResult<List<Item>>>
 {
-    private readonly DapperContext _ctx;
+    private readonly DataContext _ctx; 
     private readonly GenericOperationResult<List<Item>> _result;
 
-    public GetAllItemsQueryHandler(DapperContext ctx)
+    public GetAllItemsQueryHandler(DataContext ctx)
     {
         _ctx = ctx;
         _result = new GenericOperationResult<List<Item>>();
@@ -22,12 +23,8 @@ public class GetAllItemsQueryHandler : IRequestHandler<GetAllItemsQuery, Generic
     {
         try
         {
-            var connection = _ctx.Connect();
-            connection.Open();
-
-            var itemsResponse = await connection.QueryAsync<Item>("SELECT * FROM Items");
-            
-            _result.Payload = itemsResponse.ToList();
+            var res = _ctx.Items.Include(i => i.Manufacturer).Include(i => i.ItemCategory).ToList();
+             _result.Payload = res;
         }
         catch (Exception exception)
         {

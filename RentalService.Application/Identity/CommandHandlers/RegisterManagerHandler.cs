@@ -1,12 +1,10 @@
 ﻿using MediatR;
-using MediatR.Wrappers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using RentalService.Application.Enums;
 using RentalService.Application.Identity.Commands;
 using RentalService.Application.Models;
-using RentalService.Application.Services;
 using RentalService.Dal;
 using RentalService.Domain.Aggregates.UserProfileAggregates;
 using RentalService.Domain.Exceptions;

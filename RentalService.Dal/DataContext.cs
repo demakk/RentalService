@@ -15,6 +15,8 @@ public class DataContext : IdentityDbContext
         
     }
     public DbSet<UserBasicInfo> UserBasicInfos { get; set; }
+
+    public DbSet<Item> Items { get; set; }
     public DbSet<UserProfile> UserProfiles { get; set; }
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Order> Orders { get; set; }
@@ -22,9 +24,13 @@ public class DataContext : IdentityDbContext
 
     public DbSet<Manager> Managers { get; set; }
 
+    public DbSet<ItemCategory> ItemCategories { get; set; }
+    public DbSet<Manufacturer> Manufacturers { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<OrderItemLink>().HasKey(ol => new { ol.ItemId, ol.OrderId});
     }   
 }

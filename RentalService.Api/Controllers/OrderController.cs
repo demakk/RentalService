@@ -1,20 +1,23 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RentalService.Api.AutoMapperProfiles.CustomMappings.OrderMappings;
 using RentalService.Api.Contracts.OrderContracts.Requests;
 using RentalService.Api.Contracts.OrderContracts.Responses;
 using RentalService.Api.Extensions;
 using RentalService.Api.Filters;
 using RentalService.Application.Orders.Commands;
 using RentalService.Application.Orders.Queries;
+using RentalService.Domain.Aggregates.ItemAggregates;
 
 namespace RentalService.Api.Controllers;
 
 [ApiController]
 [Route(ApiRoutes.BaseRoute)]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize]
 public class OrderController : BaseController
 {
     private readonly IMapper _mapper;
@@ -56,9 +59,9 @@ public class OrderController : BaseController
 
         return Ok(mapped);
     }
-
-
+    
     [HttpGet]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> GetAllOrders()
     {
         var query = new GetAllOrdersQuery();
@@ -68,26 +71,35 @@ public class OrderController : BaseController
         var mapped = _mapper.Map<List<OrderResponse>>(response.Payload);
         return Ok(mapped);
     }
-    
-    //TO DO: UpdateOrder
-    
-    //TO DO: DeleteOrder
 
     [HttpGet]
     [Route(ApiRoutes.Order.OrderItemsByIdRoute)]
     [ValidateGuid("orderId")]
-    public async Task<IActionResult> GetAllOrderItemsById(string orderId)
+    public async Task<IActionResult> GetAllOrderItemsByOrderId(string orderId)
     {
-        var query = new GetOrderItemsByIdQuery {OrderId = Guid.Parse(orderId)};
+        var requesterGuid = HttpContext.GetUserProfileIdClaimValue();
+        var query = new GetOrderItemsByIdQuery {OrderId = Guid.Parse(orderId), RequesterId = requesterGuid};
 
         var response = await _mediator.Send(query);
 
-        var mapped = _mapper.Map<List<OrderItemLinkResponse>>(response.Payload);
+        var mapped = OrderMaps.MapOrderToOrderInfoResponse(response.Payload);
         
         return response.IsError ? HandleErrorResponse(response.Errors) : Ok(mapped);
         
     }
 
+    [HttpGet]
+    [Route(ApiRoutes.Order.OrdersByStatusNew)]
+    [Authorize(Roles = "Manager")]
+    public async Task<IActionResult> GetNewOrders()
+    {
+        var query = new GetOrdersByStatusQuery{StatusName = "New"};
+        var response = await _mediator.Send(query);
+
+        var mapped = _mapper.Map<List<OrderResponse>>(response.Payload);
+        
+        return Ok(mapped);
+    }
 
     [HttpPatch]
     [Route(ApiRoutes.Order.IdRoute)]

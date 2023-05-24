@@ -8,7 +8,8 @@ using RentalService.Domain.Aggregates.OrderAggregates;
 
 namespace RentalService.Application.Orders.QueryHandlers;
 
-public class GetOrderItemsByIdQueryHandler : IRequestHandler<GetOrderItemsByIdQuery, GenericOperationResult<List<OrderItemLink>>>
+public class
+    GetOrderItemsByIdQueryHandler : IRequestHandler<GetOrderItemsByIdQuery, GenericOperationResult<Order>>
 {
     private readonly DataContext _ctx;
 
@@ -16,17 +17,25 @@ public class GetOrderItemsByIdQueryHandler : IRequestHandler<GetOrderItemsByIdQu
     {
         _ctx = ctx;
     }
-    
-    public async Task<GenericOperationResult<List<OrderItemLink>>> Handle(GetOrderItemsByIdQuery request, CancellationToken cancellationToken)
+
+    public async Task<GenericOperationResult<Order>> Handle(GetOrderItemsByIdQuery request,
+        CancellationToken cancellationToken)
     {
-        var result = new GenericOperationResult<List<OrderItemLink>>();
+        var result = new GenericOperationResult<Order>();
+
+        if (request.OrderId != request.RequesterId)
+        {
+            result.AddError(ErrorCode.UnauthorizedOrderView, "Only an owner of the post or the manager can see all ");
+        }
         try
         {
-            var orderItems = await _ctx.OrderItemLinks
-                .Where(ol => ol.OrderId == request.OrderId)
-                .ToListAsync(cancellationToken: cancellationToken);
+            var order = await _ctx.Orders
+                .Include(o => o.OrderItemLinks)
+                .ThenInclude(ol => ol.Item)
+                .FirstOrDefaultAsync(o => o.Id == request.OrderId,
+                    cancellationToken: cancellationToken);
 
-            result.Payload = orderItems;
+            result.Payload = order;
         }
         catch (Exception exception)
         {

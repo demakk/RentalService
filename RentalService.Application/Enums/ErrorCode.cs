@@ -14,6 +14,7 @@ public enum ErrorCode
     PasswordNotValid = 203,
     UnauthorizedAccountRemoval = 204,
     UserDoesNotExist = 205,
+    UnauthorizedOrderView = 206,
         
     UnknownError = 1001
     

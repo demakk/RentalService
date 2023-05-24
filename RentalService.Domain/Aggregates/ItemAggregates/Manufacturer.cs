@@ -8,7 +8,8 @@ public class Manufacturer
     public Guid Id { get; private set; }
     public int CountryId { get; private set; }
     public string Name { get; private set; }
-    public string Description { get; private set; }
+    public string? Description { get; private set; }
+    
     
     
     //factory methods

@@ -6,7 +6,8 @@ public static class ApiRoutes
 
     public static class UserProfiles
     {
-        public const string IdRoute = "{id}";
+        public const string IdRoute = "id";
+        public const string CurrentIdRoute = "myId";
     }
 
     public static class Order
@@ -18,6 +19,8 @@ public static class ApiRoutes
         public const string OrderItemRoute = "{orderId}/item";
         
         public const string OrderItemsByIdRoute = "{orderId}/items";
+
+        public const string OrdersByStatusNew = "orders/new";
     }
 
     public static class Item
@@ -29,7 +32,7 @@ public static class ApiRoutes
     public static class Identity
     {
         public const string Login = "login";
-        public const string CustomerRegistration = "customerRegistation";
+        public const string CustomerRegistration = "userRegistation";
         public const string ManagerRegistration = "managerRegistation";
         public const string IdentityById = "{identityUserId}";
     }

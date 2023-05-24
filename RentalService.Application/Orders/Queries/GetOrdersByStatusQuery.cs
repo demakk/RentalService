@@ -4,8 +4,7 @@ using RentalService.Domain.Aggregates.OrderAggregates;
 
 namespace RentalService.Application.Orders.Queries;
 
-public class GetOrderItemsByIdQuery : IRequest<GenericOperationResult<Order>>
+public class GetOrdersByStatusQuery : IRequest<GenericOperationResult<List<Order>>>
 {
-    public Guid RequesterId { get; set; }
-    public Guid OrderId { get; set; }
+    public string StatusName { get; set; }
 }

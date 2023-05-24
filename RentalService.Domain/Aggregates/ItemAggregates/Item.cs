@@ -14,6 +14,10 @@ public class Item
     public decimal PricePerDay { get; private set; }
     public decimal FullPrice { get; private set; }
     public string? Description { get; private set; }
+
+    public Manufacturer Manufacturer { get; set; }
+
+    public ItemCategory ItemCategory { get; set; }
     
     //factory methods
     public static Item CreateItem(string itemCategoryId, string manufacturerId, string title,
