@@ -32,7 +32,10 @@ public class GenericOperationResult<T>
         HandleError(ErrorCode.ValidationError, message);
     }
 
-
+    public void AddSqlError(string message)
+    {
+        HandleError(ErrorCode.SqlError, message);
+    }
     private void HandleError(ErrorCode code, string message)
     {
         Errors.Add(new Error {Code = code, Message = message});

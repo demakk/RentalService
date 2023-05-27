@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentalService.Api.AutoMapperProfiles.CustomMappings.OrderMappings;
@@ -11,7 +10,6 @@ using RentalService.Api.Extensions;
 using RentalService.Api.Filters;
 using RentalService.Application.Orders.Commands;
 using RentalService.Application.Orders.Queries;
-using RentalService.Domain.Aggregates.ItemAggregates;
 
 namespace RentalService.Api.Controllers;
 
@@ -101,38 +99,78 @@ public class OrderController : BaseController
         return Ok(mapped);
     }
 
+
     [HttpPatch]
-    [Route(ApiRoutes.Order.IdRoute)]
+    [Route(ApiRoutes.Order.SetInProgressStatus)]
     [ValidateGuid("orderId")]
     [Authorize(Roles = "Manager")]
-    public async Task<IActionResult> ConfirmOrder(string orderId, [FromBody] OrderStatusUpdate status)
+    public async Task<IActionResult> SetInProgressStatus(string orderId)
     {
-        var userProfileId = HttpContext.GetUserProfileIdClaimValue();
-        var command = new UpdateOrderStatus
-        {
-            OrderId = Guid.Parse(orderId), UserProfileId = userProfileId, Status = status.Status
-        };
+        var managerUserProfileId = HttpContext.GetUserProfileIdClaimValue();
+        var command = new SetInProgressOrderStatusCommand
+            { ManagerId = managerUserProfileId, OrderId = Guid.Parse(orderId) };
+        var response = await _mediator.Send(command);
+        return response.IsError ? HandleErrorResponse(response.Errors) : Ok(response);
+    }
+
+    [HttpPatch]
+    [Route(ApiRoutes.Order.SetReadyStatus)]
+    [ValidateGuid("orderId")]
+    [Authorize(Roles = "Manager")]
+    public async Task<IActionResult> SetReadyStatus(string orderId)
+    {
+        var managerUserProfileId = HttpContext.GetUserProfileIdClaimValue();
+        var command = new SetReadyOrderStatusCommand
+            { ManagerId = managerUserProfileId, OrderId = Guid.Parse(orderId) };
 
         var response = await _mediator.Send(command);
 
-        if (response.IsError) return HandleErrorResponse(response.Errors);
+        return response.IsError ? HandleErrorResponse(response.Errors) : Ok(response);
+    }
 
-        return Ok();
+    [HttpPatch]
+    [Route(ApiRoutes.Order.SetGivenStatus)]
+    [ValidateGuid("orderId")]
+    [Authorize(Roles = "Manager")]
+    public async Task<IActionResult> SetGivenStatus(string orderId)
+    {
+        var managerUserProfileId = HttpContext.GetUserProfileIdClaimValue();
+
+        var command = new SetGivenOrderStatusCommand
+            { ManagerId = managerUserProfileId, OrderId = Guid.Parse(orderId) };
+
+        var response = await _mediator.Send(command);
+
+        return response.IsError ? HandleErrorResponse(response.Errors) : Ok(response);
     }
 
 
+    [HttpPost]
+    [Route(ApiRoutes.Order.ReturnOrderById)]
+    [Authorize(Roles = "Manager")]
+    [ValidateGuid("orderId")]
+    public async Task<IActionResult> ReturnOrder(string orderId)
+    {
+        var command = new ReturnOrderCommand { OrderId = Guid.Parse(orderId) };
+        var response = await _mediator.Send(command);
+        
+        return response.IsError ? HandleErrorResponse(response.Errors) : Ok(response.Payload);
+    }
+
+    
     [HttpPatch]
     [Route(ApiRoutes.Order.CancelById)]
     [Authorize(Roles = "Manager")]
-    [ValidateGuid("id")]
-    public async Task<IActionResult> CancelOrder(string id)
+    [ValidateGuid("orderId")]
+    public async Task<IActionResult> CancelOrder(string orderId)
     {
-        var command = new CancelOrderCommand {OrderId = Guid.Parse(id)};
+        var managerUserProfileId = HttpContext.GetUserProfileIdClaimValue();
+        var command = new CancelOrderCommand
+            {OrderId = Guid.Parse(orderId), ManagerId = managerUserProfileId};
+        
         var response = await _mediator.Send(command);
 
-        if (response.IsError) return HandleErrorResponse(response.Errors);
-        
-        return Ok(response.Payload);
+        return response.IsError ? HandleErrorResponse(response.Errors) : Ok(response.Payload);
     }
     
 }

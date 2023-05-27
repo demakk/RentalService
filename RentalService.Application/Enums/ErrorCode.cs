@@ -15,6 +15,10 @@ public enum ErrorCode
     UnauthorizedAccountRemoval = 204,
     UserDoesNotExist = 205,
     UnauthorizedOrderView = 206,
+    
+    
+    //SQL errors 
+    SqlError = 300, 
         
     UnknownError = 1001
     

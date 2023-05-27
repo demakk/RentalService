@@ -31,6 +31,11 @@ public class OperationResult
         HandleError(ErrorCode.ValidationError, message);
     }
 
+    public void AddSqlError(string message)
+    {
+        HandleError(ErrorCode.SqlError, message);
+    }
+
 
     private void HandleError(ErrorCode code, string message)
     {

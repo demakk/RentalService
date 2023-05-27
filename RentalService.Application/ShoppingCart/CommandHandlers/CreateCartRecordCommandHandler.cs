@@ -42,7 +42,7 @@ public class CreateCartRecordCommandHandler : IRequestHandler<CreateCartRecordCo
             };
 
             string sql = "INSERT INTO ShoppingCarts (CustomerId, ItemId, Count, ClearDate)" +
-                         "VALUES (@CustomerId, @ItemId, @Count, @ClearDate)";
+                         "VALUES (@CustomerId, @ItemId, @Count,  dateadd(hour, 1, getdate()))";
 
             var connection = new SqlConnection(_configuration.GetConnectionString("DapperString"));
             await connection.OpenAsync(cancellationToken);

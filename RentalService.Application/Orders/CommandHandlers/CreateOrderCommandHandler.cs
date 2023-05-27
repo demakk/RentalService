@@ -3,6 +3,7 @@ using Dapper;
 using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using RentalService.Application.Enums;
 using RentalService.Application.Models;
 using RentalService.Application.Orders.Commands;
 using RentalService.Domain.Aggregates.OrderAggregates;
@@ -42,6 +43,10 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gen
         catch (OrderNotValidException exception)
         {
             exception.ValidationErrors.ForEach(e => { _result.AddValidationError(e); });
+        }
+        catch (SqlException e)
+        {
+            _result.AddError(ErrorCode.UnknownError, e.Message);
         }
         catch (Exception exception)
         {

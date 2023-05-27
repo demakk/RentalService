@@ -14,13 +14,23 @@ public static class ApiRoutes
     {
         public const string IdRoute = "{id}";
         
-        public const string CancelById = "cancel/{id}";
+        
 
         public const string OrderItemRoute = "{orderId}/item";
         
         public const string OrderItemsByIdRoute = "{orderId}/items";
 
         public const string OrdersByStatusNew = "orders/new";
+
+        public const string SetInProgressStatus = "{orderId}/inprogress";
+
+        public const string SetReadyStatus = "{orderId}/ready";
+
+        public const string SetGivenStatus = "{orderId}/given";
+
+        public const string ReturnOrderById = "{orderId}/return";
+        
+        public const string CancelById = "{orderId}/cancel";
     }
 
     public static class Item

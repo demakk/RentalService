@@ -1,9 +1,12 @@
-﻿using Dapper;
+﻿using System.Data;
+using Dapper;
 using MediatR;
+using Microsoft.Data.SqlClient;
 using RentalService.Application.Enums;
 using RentalService.Application.Models;
 using RentalService.Application.Orders.Commands;
 using RentalService.Dal;
+using RentalService.Domain.Aggregates.UserProfileAggregates;
 
 namespace RentalService.Application.Orders.CommandHandlers;
 
@@ -26,17 +29,22 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, GenericOpe
             var connection = _ctx.Connect();
             connection.Open();
 
-            var response = await connection.QueryAsync<decimal>(Queries.CalculateMoneyToReturn, new{request.OrderId});
+            var ids = new {OrderId = request.OrderId, ManagerId = request.ManagerId };
 
-            if (!response.Any())
+            var res = await connection.ExecuteAsync("CancelOrder",
+                ids, commandType: CommandType.StoredProcedure);
+
+            if (res < 1)
             {
-                _result.AddError(ErrorCode.NotFound, OrderErrorMessages.OrderNotFound);
+                _result.AddError(ErrorCode.UnknownError, "Not possible to calculate the price");
                 return _result;
             }
 
-            //await connection.ExecuteAsync(Queries.UpdateOrderStatus, new { OrderId = request.OrderId });
-            
-            _result.Payload = response.First();
+            _result.Payload = res;
+        }
+        catch (SqlException e)
+        {
+            _result.AddSqlError(e.Message);
         }
         catch (Exception e)
         {
@@ -45,19 +53,5 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, GenericOpe
 
         return _result;
     }
-
-    private class Queries
-    {
-        public const string sthelese = "SELECT o.TotalPrice / " +
-                                       " FROM Orders o" +
-                                       " INNER JOIN OrderItemLinks oil ON o.Id = oil.OrderId" +
-                                       " INNER JOIN Items i ON i.Id = oil.ItemId" +
-                                       " WHERE o.id = @OrderId";
-        
-        public const string CalculateMoneyToReturn = "SELECT o.TotalPrice * 0.75 " +
-                                                     "FROM Orders o " +
-                                                     "WHERE o.id = @OrderId";
-
-        public const string UpdateOrderStatus = "UPDATE Orders SET Status = @Status WHERE Id = @OrderId";
-    }
+    
 }

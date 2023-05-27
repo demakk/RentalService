@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 namespace RentalService.Application.Services;
 
 
-/*public class ClearOldCartRecordsService : IHostedService, IDisposable
+public class ClearOldCartRecordsService : IHostedService, IDisposable
 {
     private Timer _timer;
     private readonly IConfiguration _configuration;
@@ -31,6 +31,8 @@ namespace RentalService.Application.Services;
 
     private void RemoveCardRecords(object state)
     {
+    //Call ON DELETE Procedure (Remove record and update number of items)
+    
         string str = "DELETE FROM ShoppingCarts WHERE ClearDate <= GETDATE()";
         
         using var connection = new SqlConnection(_configuration.GetConnectionString("DapperString"));
@@ -44,4 +46,4 @@ namespace RentalService.Application.Services;
     {
         _timer.Dispose();
     }
-}*/
+}

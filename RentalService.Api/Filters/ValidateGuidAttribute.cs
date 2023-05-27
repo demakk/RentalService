@@ -4,9 +4,8 @@ using RentalService.Api.Contracts.Common;
 
 namespace RentalService.Api.Filters;
 
-public class ValidateGuidAttribute :ActionFilterAttribute
+public class ValidateGuidAttribute : ActionFilterAttribute
 {
-
     private readonly List<string> _keys;
     public ValidateGuidAttribute(params string[] keys)
     {

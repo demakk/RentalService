@@ -27,14 +27,13 @@ public class BaseController : ControllerBase
             return NotFound(apiError);
         }
         
-        
         if (errors.Any(e => e.Code == ErrorCode.ValidationError))
         {
             apiError = new ErrorResponse
             {
                 Timestamp = DateTime.Now,
                 StatusPhrase = "Validation error",
-                StatusCode = 101
+                StatusCode = 422
             };
             errors.Where(e => e.Code == ErrorCode.ValidationError).ToList().ForEach(e =>
             {
@@ -45,15 +44,18 @@ public class BaseController : ControllerBase
             return StatusCode(404, apiError);
         }
         
-
         apiError = new ErrorResponse
         {
             Timestamp = DateTime.Now,
             StatusPhrase = "Internal server error",
             StatusCode = 500
         };
-        apiError.Errors.Add("Unknown error");
-
+        
+        errors.ForEach(e =>
+        {
+            apiError.Errors.Add(e.Message);
+        });
+        
         return StatusCode(500, apiError);
     }
 }
